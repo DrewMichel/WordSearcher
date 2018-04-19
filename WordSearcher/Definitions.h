@@ -23,10 +23,14 @@ const std::string HOME_BUTTON = "Resources/res/Home Button.png";
 const std::string RETRY_BUTTON = "Resources/res/Retry Button.png";
 
 const std::string X_PIECE_FILEPATH = "Resources/res/X.png";
-const std::string O_PIECE_FILE_PATH = "Resources/res/O.png";
+const std::string O_PIECE_FILEPATH = "Resources/res/O.png";
 
 const std::string X_PIECE_WON_FILEPATH = "Resources/res/X Win.png";
 const std::string O_PIECE_WON_FILEPATH = "Resources/res/O Win.png";
+
+const std::string GRID_SPRITE_FILEPATH = "Resources/res/Grid.png";
+
+const int GRID_WIDTH = 3, GRID_HEIGHT = 3;
 
 const int X_PIECE_VALUE = 8;
 const int O_PIECE_VALUE = 0;

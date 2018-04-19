@@ -2,6 +2,7 @@
 #define DREW_GAME_STATE_H
 
 #include "Game.h"
+#include "Definitions.h"
 
 namespace Drewski
 {
@@ -11,9 +12,17 @@ namespace Drewski
 		GameDataRef data;
 		sf::Sprite background;
 		sf::Sprite pauseButton;
+		sf::Sprite gridSprite;
+		sf::Sprite gridPieces[GRID_HEIGHT * GRID_WIDTH];
+
+		int gridArray[GRID_HEIGHT * GRID_WIDTH];
 
 		int turn;
 		int gameState;
+
+		void initGridPieces();
+		
+		void checkAndPlacePiece();
 
 	public:
 		GameState(GameDataRef dataIn);
