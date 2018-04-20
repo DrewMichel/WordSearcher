@@ -123,7 +123,6 @@ namespace Drewski
 
 	void GameState::checkAndPlacePiece()
 	{
-		
 		sf::Vector2i touchPoint = this->data->inputManager.getMousePosition(this->data->window);
 		sf::FloatRect gridSize = gridSprite.getGlobalBounds();
 		sf::Vector2f gapOutsideOfGrid = sf::Vector2f((SCREEN_WIDTH - gridSize.width) / 2, (SCREEN_HEIGHT - gridSize.height) / 2);
@@ -148,7 +147,7 @@ namespace Drewski
 			}
 		}
 
-		if (gridArray[(row * GRID_HEIGHT ) + column] == EMPTY_PIECE )
+		if (gridArray[(row * GRID_HEIGHT ) + column] == EMPTY_PIECE && gameState == STATE_PLAYING)
 		{
 			gridArray[(row * GRID_HEIGHT) + column] = turn;
 
@@ -175,20 +174,42 @@ namespace Drewski
 
 	void GameState::checkPlayerHasWon(int turn)
 	{
-		checkHorizontalMatch(turn);
-		checkVerticalMatch(turn);
-		checkDiagonalDownMatch(turn);
-		checkDiagonalUpMatch(turn);
+		vector<int> winningIndices;
+
+		cout << "CHECKING PLAYER WON: " << turn << endl;
+
+		checkHorizontalMatch(turn, winningIndices);
+		checkVerticalMatch(turn, winningIndices);
+		checkDiagonalDownMatch(turn, winningIndices);
+		checkDiagonalUpMatch(turn, winningIndices);
 		checkDrawMatch();
 
-		if (gameState == STATE_DRAW || gameState == STATE_LOSE || gameState == STATE_WON)
+		cout << "SIZE: " << winningIndices.size() << endl;
+
+		if ((gameState == STATE_DRAW || gameState == STATE_LOSE || gameState == STATE_WON) && ((winningIndices.size() / 2) >= WIN_REQUIREMENT))
 		{
 
+			cout << "INSIDE" << endl;
+			if (gameState == STATE_WON)
+			{
+				for (int i = 0; i < winningIndices.size(); i+=2)
+				{
+					gridPieces[(winningIndices[i] * GRID_HEIGHT) + winningIndices[i + 1]].setTexture(this->data->assetManager.getTexture("X Piece Won"));
+					cout << winningIndices[i + 1] << ", " << (winningIndices[i]) << endl;
+				}
+			}
+			else if (gameState == STATE_LOSE)
+			{
+				for (int i = 0; i < winningIndices.size(); i+=2)
+				{
+					gridPieces[(winningIndices[i] * GRID_HEIGHT) + winningIndices[i + 1]].setTexture(this->data->assetManager.getTexture("O Piece Won"));
+				}
+			}
 		}
 	}
 
 	// x x x
-	void GameState::checkHorizontalMatch(int pieceToCheck)
+	void GameState::checkHorizontalMatch(int pieceToCheck, vector<int>& winningIndices)
 	{
 		int pieceMatches = 0;
 		bool ongoing = true;
@@ -198,12 +219,15 @@ namespace Drewski
 			for (int y = 0; y < GRID_HEIGHT && ongoing; y++)
 			{
 				pieceMatches = 0;
+				winningIndices.clear();
 
 				for (int x = 0; x < GRID_WIDTH && ongoing; x++)
 				{
 					if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
 					{
 						pieceMatches++;
+						winningIndices.push_back(y);
+						winningIndices.push_back(x);
 
 						if (pieceMatches >= WIN_REQUIREMENT)
 						{
@@ -217,6 +241,7 @@ namespace Drewski
 							{
 								gameState == STATE_LOSE;
 							}
+							std::cout << "HORIZONTAL" << endl;
 						}
 					}
 				}
@@ -227,22 +252,25 @@ namespace Drewski
 	// x
 	// x
 	// x
-	void GameState::checkVerticalMatch(int pieceToCheck)
+	void GameState::checkVerticalMatch(int pieceToCheck, vector<int>& winningIndices)
 	{
 		int pieceMatches = 0;
 		bool ongoing = true;
 
 		if (gameState == STATE_PLAYING)
 		{
-			for (int x = 0; x < GRID_WIDTH; x++)
+			for (int x = 0; x < GRID_WIDTH && ongoing; x++)
 			{
 				pieceMatches = 0;
+				winningIndices.clear();
 
-				for (int y = 0; y < GRID_HEIGHT; y++)
+				for (int y = 0; y < GRID_HEIGHT && ongoing; y++)
 				{
 					if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
 					{
 						pieceMatches++;
+						winningIndices.push_back(y);
+						winningIndices.push_back(x);
 
 						if (pieceMatches >= WIN_REQUIREMENT)
 						{
@@ -256,6 +284,7 @@ namespace Drewski
 							{
 								gameState == STATE_LOSE;
 							}
+							std::cout << "VERTICAL" << endl;
 						}
 					}
 				}
@@ -266,18 +295,22 @@ namespace Drewski
 	// x
 	//  x
 	//   x
-	void GameState::checkDiagonalDownMatch(int pieceToCheck)
+	void GameState::checkDiagonalDownMatch(int pieceToCheck, vector<int>& winningIndices)
 	{
 		int pieceMatches = 0;
 		bool ongoing = true;
 
 		if (gameState == STATE_PLAYING)
 		{
+			winningIndices.clear();
+
 			for (int i = 0; i < GRID_HEIGHT && i < GRID_WIDTH && ongoing; i++)
 			{
 				if (gridArray[(i * GRID_HEIGHT) + i] == pieceToCheck)
 				{
 					pieceMatches++;
+					winningIndices.push_back(i);
+					winningIndices.push_back(i);
 
 					if (pieceMatches >= WIN_REQUIREMENT)
 					{
@@ -291,6 +324,7 @@ namespace Drewski
 						{
 							gameState == STATE_LOSE;
 						}
+						std::cout << "DIAGONAL DOWN" << endl;
 					}
 				}
 			}
@@ -300,36 +334,41 @@ namespace Drewski
 	//   x
 	//  x
 	// x
-	void GameState::checkDiagonalUpMatch(int pieceToCheck)
+	void GameState::checkDiagonalUpMatch(int pieceToCheck, vector<int>& winningIndices)
 	{
 		int pieceMatches = 0;
 		bool ongoing = true;
+		int y = GRID_HEIGHT - 1, x = 0;
 
 		if (gameState == STATE_PLAYING)
 		{
-			for (int y = GRID_HEIGHT - 1; y >= 0 && ongoing; y--)
+			winningIndices.clear();
+
+			while(y >= 0 && y < GRID_HEIGHT && x >= 0 && x < GRID_WIDTH && ongoing)
 			{
-				for (int x = 0; x < GRID_WIDTH && ongoing; x++)
+				if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
 				{
-					if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
+					pieceMatches++;
+					winningIndices.push_back(y);
+					winningIndices.push_back(x);
+
+					if (pieceMatches >= WIN_REQUIREMENT)
 					{
-						pieceMatches++;
+						ongoing = false;
 
-						if (pieceMatches >= WIN_REQUIREMENT)
+						if (pieceToCheck == PLAYER_PIECE)
 						{
-							ongoing = false;
-
-							if (pieceToCheck == PLAYER_PIECE)
-							{
-								gameState = STATE_WON;
-							}
-							else if (pieceToCheck == AI_PIECE)
-							{
-								gameState == STATE_LOSE;
-							}
+							gameState = STATE_WON;
 						}
+						else if (pieceToCheck == AI_PIECE)
+						{
+							gameState == STATE_LOSE;
+						}
+						std::cout << "DIAGONAL UP" << endl;
 					}
 				}
+				y--;
+				x++;
 			}
 		}
 	}
@@ -354,6 +393,7 @@ namespace Drewski
 			if (undetected)
 			{
 				gameState = STATE_DRAW;
+				std::cout << "DRAW" << endl;
 			}
 		}
 	}

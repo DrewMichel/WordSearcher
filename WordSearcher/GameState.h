@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "Definitions.h"
+#include <vector>
 
 namespace Drewski
 {
@@ -26,10 +27,10 @@ namespace Drewski
 
 		void checkPlayerHasWon(int turn);
 
-		void checkHorizontalMatch(int pieceToCheck);
-		void checkVerticalMatch(int pieceToCheck);
-		void checkDiagonalDownMatch(int pieceToCheck);
-		void checkDiagonalUpMatch(int pieceToCheck);
+		void checkHorizontalMatch(int pieceToCheck, std::vector<int>& winningIndices);
+		void checkVerticalMatch(int pieceToCheck, std::vector<int>& winningIndices);
+		void checkDiagonalDownMatch(int pieceToCheck, std::vector<int>& winningIndices);
+		void checkDiagonalUpMatch(int pieceToCheck, std::vector<int>& winningIndices);
 		void checkDrawMatch();
 
 	public:
