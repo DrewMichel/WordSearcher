@@ -20,6 +20,7 @@ namespace Drewski
 	void GameState::init()
 	{
 		gameState = STATE_PLAYING;
+#if 0
 		turn = PLAYER_PIECE;
 
 		this->data->assetManager.loadTexture("Game Background", GAME_BACKGROUND_FILEPATH);
@@ -48,6 +49,7 @@ namespace Drewski
 				gridArray[(y * GRID_HEIGHT) + x ] = EMPTY_PIECE;
 			}
 		}
+#endif
 	}
 
 	void GameState::handleInput()
@@ -56,11 +58,12 @@ namespace Drewski
 
 		while (this->data->window.pollEvent(sfEvent))
 		{
+
 			if (sf::Event::Closed == sfEvent.type)
 			{
 				this->data->window.close();
 			}
-
+#if 0
 			if (this->data->inputManager.isSpriteClicked(this->pauseButton, sf::Mouse::Left, this->data->window))
 			{
 				//std::cout << "Pause the Game" << std::endl;
@@ -76,6 +79,7 @@ namespace Drewski
 				}
 				
 			}
+#endif
 		}
 	}
 
@@ -87,7 +91,7 @@ namespace Drewski
 	void GameState::draw(float deltaTimeIn)
 	{
 		this->data->window.clear();
-
+#if 0
 		this->data->window.draw(this->background);
 		this->data->window.draw(this->pauseButton);
 		this->data->window.draw(gridSprite);
@@ -99,7 +103,7 @@ namespace Drewski
 				this->data->window.draw(gridPieces[(y * GRID_HEIGHT) + x]);
 			}
 		}
-
+#endif
 		this->data->window.display();
 	}
 
