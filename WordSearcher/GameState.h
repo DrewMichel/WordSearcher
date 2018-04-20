@@ -24,6 +24,14 @@ namespace Drewski
 		
 		void checkAndPlacePiece();
 
+		void checkPlayerHasWon(int turn);
+
+		void checkHorizontalMatch(int pieceToCheck);
+		void checkVerticalMatch(int pieceToCheck);
+		void checkDiagonalDownMatch(int pieceToCheck);
+		void checkDiagonalUpMatch(int pieceToCheck);
+		void checkDrawMatch();
+
 	public:
 		GameState(GameDataRef dataIn);
 		~GameState();

@@ -29,6 +29,9 @@ namespace Drewski
 		this->data->assetManager.loadTexture("X Piece", X_PIECE_FILEPATH);
 		this->data->assetManager.loadTexture("O Piece", O_PIECE_FILEPATH);
 
+		this->data->assetManager.loadTexture("X Piece Won", X_PIECE_WON_FILEPATH);
+		this->data->assetManager.loadTexture("O Piece Won", O_PIECE_WON_FILEPATH);
+
 		background.setTexture(this->data->assetManager.getTexture("Game Background"));
 		pauseButton.setTexture(this->data->assetManager.getTexture("Pause Button"));
 		gridSprite.setTexture(this->data->assetManager.getTexture("Grid Sprite"));
@@ -67,7 +70,11 @@ namespace Drewski
 			}
 			else if (this->data->inputManager.isSpriteClicked(this->gridSprite, sf::Mouse::Left, this->data->window))
 			{
-				this->checkAndPlacePiece();
+				if (gameState == STATE_PLAYING)
+				{
+					this->checkAndPlacePiece();
+				}
+				
 			}
 		}
 	}
@@ -149,17 +156,205 @@ namespace Drewski
 			{
 				gridPieces[(row * GRID_HEIGHT) + column].setTexture(this->data->assetManager.getTexture("X Piece"));
 
+				this->checkPlayerHasWon(turn);
+
 				turn = AI_PIECE;
 			}
 			else if (AI_PIECE == turn)
 			{
 				gridPieces[(row * GRID_HEIGHT) + column].setTexture(this->data->assetManager.getTexture("O Piece"));
 
+				this->checkPlayerHasWon(turn);
+
 				turn = PLAYER_PIECE;
 			}
 
 			gridPieces[(row * GRID_HEIGHT) + column].setColor(sf::Color(255, 255, 255, 255));
 		}
-		
+	}
+
+	void GameState::checkPlayerHasWon(int turn)
+	{
+		checkHorizontalMatch(turn);
+		checkVerticalMatch(turn);
+		checkDiagonalDownMatch(turn);
+		checkDiagonalUpMatch(turn);
+		checkDrawMatch();
+
+		if (gameState == STATE_DRAW || gameState == STATE_LOSE || gameState == STATE_WON)
+		{
+
+		}
+	}
+
+	// x x x
+	void GameState::checkHorizontalMatch(int pieceToCheck)
+	{
+		int pieceMatches = 0;
+		bool ongoing = true;
+
+		if (gameState == STATE_PLAYING)
+		{
+			for (int y = 0; y < GRID_HEIGHT && ongoing; y++)
+			{
+				pieceMatches = 0;
+
+				for (int x = 0; x < GRID_WIDTH && ongoing; x++)
+				{
+					if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
+					{
+						pieceMatches++;
+
+						if (pieceMatches >= WIN_REQUIREMENT)
+						{
+							ongoing = false;
+							
+							if (pieceToCheck == PLAYER_PIECE)
+							{
+								gameState = STATE_WON;
+							}
+							else if(pieceToCheck == AI_PIECE)
+							{
+								gameState == STATE_LOSE;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// x
+	// x
+	// x
+	void GameState::checkVerticalMatch(int pieceToCheck)
+	{
+		int pieceMatches = 0;
+		bool ongoing = true;
+
+		if (gameState == STATE_PLAYING)
+		{
+			for (int x = 0; x < GRID_WIDTH; x++)
+			{
+				pieceMatches = 0;
+
+				for (int y = 0; y < GRID_HEIGHT; y++)
+				{
+					if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
+					{
+						pieceMatches++;
+
+						if (pieceMatches >= WIN_REQUIREMENT)
+						{
+							ongoing = false;
+
+							if (pieceToCheck == PLAYER_PIECE)
+							{
+								gameState = STATE_WON;
+							}
+							else if (pieceToCheck == AI_PIECE)
+							{
+								gameState == STATE_LOSE;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// x
+	//  x
+	//   x
+	void GameState::checkDiagonalDownMatch(int pieceToCheck)
+	{
+		int pieceMatches = 0;
+		bool ongoing = true;
+
+		if (gameState == STATE_PLAYING)
+		{
+			for (int i = 0; i < GRID_HEIGHT && i < GRID_WIDTH && ongoing; i++)
+			{
+				if (gridArray[(i * GRID_HEIGHT) + i] == pieceToCheck)
+				{
+					pieceMatches++;
+
+					if (pieceMatches >= WIN_REQUIREMENT)
+					{
+						ongoing = false;
+
+						if (pieceToCheck == PLAYER_PIECE)
+						{
+							gameState = STATE_WON;
+						}
+						else if (pieceToCheck == AI_PIECE)
+						{
+							gameState == STATE_LOSE;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//   x
+	//  x
+	// x
+	void GameState::checkDiagonalUpMatch(int pieceToCheck)
+	{
+		int pieceMatches = 0;
+		bool ongoing = true;
+
+		if (gameState == STATE_PLAYING)
+		{
+			for (int y = GRID_HEIGHT - 1; y >= 0 && ongoing; y--)
+			{
+				for (int x = 0; x < GRID_WIDTH && ongoing; x++)
+				{
+					if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
+					{
+						pieceMatches++;
+
+						if (pieceMatches >= WIN_REQUIREMENT)
+						{
+							ongoing = false;
+
+							if (pieceToCheck == PLAYER_PIECE)
+							{
+								gameState = STATE_WON;
+							}
+							else if (pieceToCheck == AI_PIECE)
+							{
+								gameState == STATE_LOSE;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	void GameState::checkDrawMatch()
+	{
+		bool undetected = true;
+
+		if (gameState == STATE_PLAYING)
+		{
+			for (int y = 0; y < GRID_HEIGHT && undetected; y++)
+			{
+				for (int x = 0; x < GRID_WIDTH && undetected; x++)
+				{
+					if (gridArray[(y * GRID_HEIGHT) + x] == EMPTY_PIECE)
+					{
+						undetected = false;
+					}
+				}
+			}
+
+			if (undetected)
+			{
+				gameState = STATE_DRAW;
+			}
+		}
 	}
 }

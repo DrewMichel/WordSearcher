@@ -36,6 +36,8 @@ const int X_PIECE_VALUE = 8;
 const int O_PIECE_VALUE = 0;
 const int EMPTY_PIECE = -1;
 
+const int WIN_REQUIREMENT = 3;
+
 const int PLAYER_PIECE = X_PIECE_VALUE;
 const int AI_PIECE = O_PIECE_VALUE;
 
