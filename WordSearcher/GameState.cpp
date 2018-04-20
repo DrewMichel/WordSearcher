@@ -147,6 +147,7 @@ namespace Drewski
 			}
 		}
 
+		cout << "GAME STATE: " << gameState << endl;
 		if (gridArray[(row * GRID_HEIGHT ) + column] == EMPTY_PIECE && gameState == STATE_PLAYING)
 		{
 			gridArray[(row * GRID_HEIGHT) + column] = turn;
@@ -176,20 +177,14 @@ namespace Drewski
 	{
 		vector<int> winningIndices;
 
-		cout << "CHECKING PLAYER WON: " << turn << endl;
-
 		checkHorizontalMatch(turn, winningIndices);
 		checkVerticalMatch(turn, winningIndices);
 		checkDiagonalDownMatch(turn, winningIndices);
 		checkDiagonalUpMatch(turn, winningIndices);
 		checkDrawMatch();
 
-		cout << "SIZE: " << winningIndices.size() << endl;
-
 		if ((gameState == STATE_DRAW || gameState == STATE_LOSE || gameState == STATE_WON) && ((winningIndices.size() / 2) >= WIN_REQUIREMENT))
 		{
-
-			cout << "INSIDE" << endl;
 			if (gameState == STATE_WON)
 			{
 				for (int i = 0; i < winningIndices.size(); i+=2)
@@ -239,7 +234,7 @@ namespace Drewski
 							}
 							else if(pieceToCheck == AI_PIECE)
 							{
-								gameState == STATE_LOSE;
+								gameState = STATE_LOSE;
 							}
 							std::cout << "HORIZONTAL" << endl;
 						}
@@ -282,7 +277,8 @@ namespace Drewski
 							}
 							else if (pieceToCheck == AI_PIECE)
 							{
-								gameState == STATE_LOSE;
+								
+								gameState = STATE_LOSE;
 							}
 							std::cout << "VERTICAL" << endl;
 						}
@@ -322,7 +318,7 @@ namespace Drewski
 						}
 						else if (pieceToCheck == AI_PIECE)
 						{
-							gameState == STATE_LOSE;
+							gameState = STATE_LOSE;
 						}
 						std::cout << "DIAGONAL DOWN" << endl;
 					}
@@ -362,7 +358,7 @@ namespace Drewski
 						}
 						else if (pieceToCheck == AI_PIECE)
 						{
-							gameState == STATE_LOSE;
+							gameState = STATE_LOSE;
 						}
 						std::cout << "DIAGONAL UP" << endl;
 					}
