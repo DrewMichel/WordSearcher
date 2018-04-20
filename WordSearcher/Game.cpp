@@ -6,6 +6,7 @@ namespace Drewski
 	Game::Game(int width, int height, string title)
 	{
 		data->window.create(sf::VideoMode(width, height), title, sf::Style::Close | sf::Style::Titlebar);
+		//data->window.setFramerateLimit(60);
 
 		data->machine.addState(StateRef(new SplashState(this->data)));
 

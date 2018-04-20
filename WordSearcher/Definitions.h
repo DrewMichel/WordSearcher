@@ -4,7 +4,7 @@
 
 #include <string>
 
-const int SCREEN_WIDTH = 768, SCREEN_HEIGHT = 1136;
+const int SCREEN_WIDTH = 1080, SCREEN_HEIGHT = 720;
 const std::string DEFAULT_GAME_TITLE = "SFML Tutorial";
 
 const float SPLASH_STATE_SHOW_TIME = 3.0f;
@@ -29,6 +29,8 @@ const std::string X_PIECE_WON_FILEPATH = "Resources/res/X Win.png";
 const std::string O_PIECE_WON_FILEPATH = "Resources/res/O Win.png";
 
 const std::string GRID_SPRITE_FILEPATH = "Resources/res/Grid.png";
+
+const std::string FONT_ARIAL_FILEPATH = "Resources/font/arial.ttf";
 
 const int GRID_WIDTH = 3, GRID_HEIGHT = 3;
 

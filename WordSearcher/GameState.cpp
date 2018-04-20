@@ -4,6 +4,8 @@
 #include <iostream>
 #include "PauseState.h"
 #include "GameOverState.h"
+#include "PerlinNoise.h"
+#include <chrono>
 
 namespace Drewski
 {
@@ -20,6 +22,16 @@ namespace Drewski
 	void GameState::init()
 	{
 		gameState = STATE_PLAYING;
+
+		this->data->assetManager.loadFont("arial", FONT_ARIAL_FILEPATH);
+
+		sf::Text text;
+		text.setFont(this->data->assetManager.getFont("arial"));
+		text.setString("BATMAN");
+		text.setFillColor(sf::Color::Red);
+		text.setCharacterSize(40);
+
+		this->data->assetManager.addText("TEST", text);
 #if 0
 		turn = PLAYER_PIECE;
 
@@ -88,8 +100,11 @@ namespace Drewski
 
 	}
 
+	int counter = 0;
+
 	void GameState::draw(float deltaTimeIn)
 	{
+		//this->data->window.clear(sf::Color::Cyan);
 		this->data->window.clear();
 #if 0
 		this->data->window.draw(this->background);
@@ -104,6 +119,98 @@ namespace Drewski
 			}
 		}
 #endif
+#if 0
+		counter++;
+		if (counter > 60)
+		{
+			this->data->window.clear();
+			counter = 0;
+
+			PerlinNoise color;
+
+			double speed = 0.05f, z = 0.5f;
+			int number;
+			int random = rand();
+
+			sf::Uint8 *pixels = new sf::Uint8[SCREEN_WIDTH * SCREEN_HEIGHT * 4];
+			for (int y = 0; y < SCREEN_HEIGHT; y++)
+			{
+				for (int x = 0; x < SCREEN_WIDTH; x++)
+				{
+					number = 4 * ((y * SCREEN_WIDTH) + x);
+					pixels[number] = color.noise(x * speed, y * speed, z) * 255; // RED
+					pixels[number + 1] = color.noise(x * speed + random, y * speed + random, z) * 255; // GREEN
+					pixels[number + 2] = color.noise(x * speed + random * random, y * speed + random * random, z) * 255; // BLUE
+					pixels[number + 3] = 255; // ALPHA
+				}
+			}
+
+			sf::Image image;
+			sf::Texture texture;
+			sf::Sprite sprite;
+
+			image.create(SCREEN_WIDTH, SCREEN_HEIGHT, pixels);
+			texture.create(SCREEN_WIDTH, SCREEN_HEIGHT);
+			texture.loadFromImage(image);
+			sprite.setTexture(texture);
+
+			this->data->window.draw(sprite);
+
+			delete[] pixels;
+		}
+#endif
+
+#if 1
+		if (counter > 255)
+		{
+			counter = 0;
+		}
+
+		cout << "COUNTER: " << counter << endl;
+
+		counter++;
+		// TODO: MOVE TO MAIN MENU, USE ORBIT IN GAME
+		int number;
+
+		sf::Uint8 *pixels = new sf::Uint8[SCREEN_WIDTH * SCREEN_HEIGHT * 4];
+		for (int y = 0; y < SCREEN_HEIGHT; y++)
+		{
+			for (int x = 0; x < SCREEN_WIDTH; x++)
+			{
+				number = 4 * ((y * SCREEN_WIDTH) + x);
+				pixels[number] = counter + ((x / (float)SCREEN_WIDTH * 255));
+				pixels[number + 1] = (x / ((float)SCREEN_WIDTH * 5) * 255);
+				pixels[number + 2] = (x / ((float)SCREEN_WIDTH * 5) * 255); // BLUE
+				pixels[number + 3] = 255; // ALPHA
+			}
+		}
+
+		sf::Image image;
+		sf::Texture texture;
+		sf::Sprite sprite;
+
+		image.create(SCREEN_WIDTH, SCREEN_HEIGHT, pixels);
+		texture.create(SCREEN_WIDTH, SCREEN_HEIGHT);
+		texture.loadFromImage(image);
+		sprite.setTexture(texture);
+
+		this->data->window.draw(sprite);
+
+		delete[] pixels;
+#endif
+
+		//this->data->assetManager.getPerlin().update();
+
+		//this->data->window.draw(this->data->assetManager.getPerlin().getSprite());
+		
+		
+		//this->data->window.draw(this->background);
+
+		for (auto iterator = this->data->assetManager.getTextMap().begin(); iterator != this->data->assetManager.getTextMap().end(); iterator++)
+		{
+			this->data->window.draw(iterator->second);
+		}
+
 		this->data->window.display();
 	}
 
