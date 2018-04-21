@@ -10,7 +10,7 @@ class SearchWord
 {
     private:
         string original, word;
-		bool found;
+		bool found, outlining;
 
     public:
 
@@ -29,11 +29,14 @@ class SearchWord
         string getOriginal();
         string getWord();
 		bool getFound();
+		bool getOutlining();
 
         // Mutators
         void setOriginal(const string& originalIn);
         void setWord(const string& wordIn);
         void setFound(const bool foundIn);
+		void setOutlining(const bool outliningIn);
+		void flipOutlining();
 };
 
 #endif

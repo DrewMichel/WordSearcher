@@ -33,19 +33,34 @@ namespace Drewski
 		return this->fontMap.at(name);
 	}
 
-	sf::Text &AssetManager::getText(string name)
+	sf::Text &AssetManager::getGridText(string name)
 	{
-		return this->textMap.at(name);
+		return this->gridTextMap.at(name);
 	}
 
-	void AssetManager::addText(string name, sf::Text text)
+	void AssetManager::addGridText(string name, sf::Text text)
 	{
-		this->textMap[name] = text;
+		this->gridTextMap[name] = text;
 	}
 
-	unordered_map<string, sf::Text> &AssetManager::getTextMap()
+	unordered_map<string, sf::Text> &AssetManager::getGridTextMap()
 	{
-		return this->textMap;
+		return this->gridTextMap;
+	}
+
+	void AssetManager::addSearchText(sf::Text text)
+	{
+		searchTextVector.push_back(text);
+	}
+
+	sf::Text &AssetManager::getSearchText(int index)
+	{
+		return searchTextVector.at(index);
+	}
+
+	vector<sf::Text> &AssetManager::getSearchTextVector()
+	{
+		return searchTextVector;
 	}
 
 	/*

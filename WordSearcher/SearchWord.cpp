@@ -60,3 +60,18 @@ void SearchWord::setFound(const bool foundIn)
 {
 	found = foundIn;
 }
+
+void SearchWord::setOutlining(const bool outliningIn)
+{
+	outlining = outliningIn;
+}
+
+bool SearchWord::getOutlining()
+{
+	return outlining;
+}
+
+void SearchWord::flipOutlining()
+{
+	outlining = !outlining;
+}

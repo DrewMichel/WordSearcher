@@ -6,6 +6,7 @@
 #include "GameOverState.h"
 #include "PerlinNoise.h"
 #include <chrono>
+#include <algorithm>
 
 namespace Drewski
 {
@@ -17,6 +18,37 @@ namespace Drewski
 	GameState::~GameState()
 	{
 
+	}
+
+	/*
+	int compareSFText(const sf::Text& one, const sf::Text& two)
+	{
+		string curOne = one.getString();
+		string curTwo = two.getString();
+
+		if (curOne > curTwo)
+		{
+			return 1;
+		}
+		else if (curOne < curTwo)
+		{
+			return -1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	*/
+
+	inline bool operator<(const sf::Text& one, const sf::Text& two)
+	{
+		string curOne = one.getString();
+		string curTwo = two.getString();
+
+		cout << "COMPARING: " << curOne << " < " << curTwo << " == " << (curOne < curTwo) << endl;
+
+		return curOne < curTwo;
 	}
 
 	void GameState::init()
@@ -32,7 +64,7 @@ namespace Drewski
 		text.setFillColor(sf::Color::Red);
 		text.setCharacterSize(24);
 
-		this->data->assetManager.addText("TEST", text);
+		this->data->assetManager.addGridText("TEST", text);
 		*/
 
 		for(int i = 0; i < data->grid.size(); i++)
@@ -45,8 +77,43 @@ namespace Drewski
 
 			text.setPosition(text.getPosition().x + 25, text.getPosition().y +  25 + (i * 30));
 
-			this->data->assetManager.addText("GRID" + to_string(i), text);
+			this->data->assetManager.addGridText("GRID" + to_string(i), text);
 		}
+
+		int index = 0;
+
+		for (auto iterator = data->originalSearch.begin(); iterator != data->originalSearch.end(); iterator++)
+		{
+			sf::Text text;
+			text.setFont(this->data->assetManager.getFont("courier new bold"));
+			text.setString(iterator->second.getOriginal());
+			text.setFillColor(sf::Color(255, 215, 0, 255));
+			text.setCharacterSize(20);
+
+			//text.setPosition(text.getPosition().x + (25 * 2) + (SCREEN_WIDTH / 2), text.getPosition().y + 25 + (index * 20));
+
+			this->data->assetManager.addSearchText( text);
+			index++;
+		}
+
+		sort(data->assetManager.getSearchTextVector().begin(), data->assetManager.getSearchTextVector().end(), operator<);
+		index = 0;
+		for (auto iterator = data->assetManager.getSearchTextVector().begin(); iterator != data->assetManager.getSearchTextVector().end(); iterator++)
+		{
+			iterator->setPosition(iterator->getPosition().x + (25 * 2) + (SCREEN_WIDTH / 2), iterator->getPosition().y + 25 + (index * 20));
+			index++;
+		}
+
+		cout << "ORIGINAL SEARCH SIZE: " << data->originalSearch.size() << endl;
+
+		// TODO: SEARCH FOR AND FILL SEARCHWORD COORDINATES
+
+		// TODO: GENERATE ORBS IN MAP/UNORDERED_MAP HERE
+
+		// TODO: MOVE ORBS BETWEEN THEIR COORDINATES IN UPDATE FUNCTION
+
+		// TODO: IF SEARCHWORD IS OUTLINING, DISPLAY ORBS IN DRAW
+
 
 		pauseButton.setTexture(this->data->assetManager.getTexture("Pause Button"));
 		pauseButton.setPosition(this->data->window.getSize().x - pauseButton.getLocalBounds().width, pauseButton.getPosition().y);
@@ -110,12 +177,14 @@ namespace Drewski
 			// getString (RAW) and use it as index in unordered_map<string (RAW), SearchWord)>
 			// toggle SearchWord isDisplaying
 			// In draw function, iterate through and outline displaying searchwords based on x1, y1, x2, y2, coordinates
-			for (auto iterator = data->assetManager.getTextMap().begin(); iterator != data->assetManager.getTextMap().end(); iterator++)
+			for (auto iterator = data->assetManager.getSearchTextVector().begin(); iterator != data->assetManager.getSearchTextVector().end(); iterator++)
 			{
-				if (data->inputManager.isTextClicked(iterator->second, sf::Mouse::Left, this->data->window))
+				if (data->inputManager.isTextClicked(*iterator, sf::Mouse::Left, this->data->window))
 				{
-					string out = iterator->second.getString();
-					cout << out << endl;
+					string name = iterator->getString();
+
+					data->originalSearch[name].flipOutlining();
+					cout << name << endl;
 				}
 			}
 
@@ -275,9 +344,23 @@ namespace Drewski
 
 		this->data->window.draw(this->pauseButton);
 
-		for (auto iterator = this->data->assetManager.getTextMap().begin(); iterator != this->data->assetManager.getTextMap().end(); iterator++)
+		for (auto iterator = this->data->assetManager.getGridTextMap().begin(); iterator != this->data->assetManager.getGridTextMap().end(); iterator++)
 		{
 			this->data->window.draw(iterator->second);
+		}
+
+		for (auto iterator = this->data->assetManager.getSearchTextVector().begin(); iterator != this->data->assetManager.getSearchTextVector().end(); iterator++)
+		{
+			string name = iterator->getString();
+
+			// HANDLE ORB DRAWING
+			// Place orbs into unordered_map<string (RAW), Orb> with x1, y1, x2, y2 from SearchWord
+			if (this->data->originalSearch[name].getOutlining())
+			{
+				this->data->window.draw(*iterator);
+			}
+
+			//this->data->window.draw(*iterator);
 		}
 
 		this->data->window.display();

@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <map>
 #include "SearchWord.h"
 
 using namespace std;
