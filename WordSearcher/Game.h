@@ -9,6 +9,10 @@
 #include "StateMachine.h"
 #include "AssetManager.h"
 #include "InputManager.h"
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include "SearchWord.h"
 
 using namespace std;
 
@@ -20,6 +24,9 @@ namespace Drewski
 		sf::RenderWindow window;
 		AssetManager assetManager;
 		InputManager inputManager;
+		vector<string> grid;
+		unordered_map<string, string> parseSearch;
+		unordered_map<string, SearchWord> originalSearch;
 	};
 
 	typedef shared_ptr<GameData> GameDataRef;
@@ -33,7 +40,7 @@ namespace Drewski
 
 			void run();
 		public:
-			Game(int width, int height, string title);
+			Game(int width, int height, string title, vector<string> gridIn = vector<string>(), vector<string> searchIn = vector<string>());
 		
 	};
 }

@@ -3,8 +3,21 @@
 
 namespace Drewski
 {
-	Game::Game(int width, int height, string title)
+	Game::Game(int width, int height, string title, vector<string> gridIn, vector<string> searchIn)
 	{
+		data->grid = gridIn;
+	
+		// generate searches
+		for (int i = 0; i < searchIn.size(); i++)
+		{
+			string san = WordSanitizer::sanitize(searchIn[i]);
+
+			data->parseSearch[san] = searchIn[i];
+			data->parseSearch[WordSanitizer::reverse(san)] = searchIn[i];
+
+			data->originalSearch[searchIn[i]] = SearchWord(searchIn[i]);
+		}
+
 		data->window.create(sf::VideoMode(width, height), title, sf::Style::Close | sf::Style::Titlebar);
 		//data->window.setFramerateLimit(60);
 
@@ -46,8 +59,6 @@ namespace Drewski
 			interpolation = accumulator / DELTA_TIME;
 
 			this->data->machine.getActivateState()->draw(interpolation);
-
-
 		}
 	}
 }

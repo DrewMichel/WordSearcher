@@ -23,15 +23,30 @@ namespace Drewski
 	{
 		gameState = STATE_PLAYING;
 
-		this->data->assetManager.loadFont("arial", FONT_ARIAL_FILEPATH);
+		this->data->assetManager.loadFont("courier new bold", FONT_COURIER_NEW_BOLD_FILEPATH);
 		this->data->assetManager.loadTexture("Pause Button", PAUSE_BUTTON);
+		/*
 		sf::Text text;
 		text.setFont(this->data->assetManager.getFont("arial"));
-		text.setString("BATMAN");
+		text.setString("SAMPLE TEXT");
 		text.setFillColor(sf::Color::Red);
-		text.setCharacterSize(40);
+		text.setCharacterSize(24);
 
-		//this->data->assetManager.addText("TEST", text);
+		this->data->assetManager.addText("TEST", text);
+		*/
+
+		for(int i = 0; i < data->grid.size(); i++)
+		{
+			sf::Text text;
+			text.setFont(this->data->assetManager.getFont("courier new bold"));
+			text.setString(WordSanitizer::smudge(data->grid[i]));
+			text.setFillColor(sf::Color(255, 215, 0, 255));
+			text.setCharacterSize(25);
+
+			text.setPosition(text.getPosition().x + 25, text.getPosition().y +  25 + (i * 30));
+
+			this->data->assetManager.addText("GRID" + to_string(i), text);
+		}
 
 		pauseButton.setTexture(this->data->assetManager.getTexture("Pause Button"));
 		pauseButton.setPosition(this->data->window.getSize().x - pauseButton.getLocalBounds().width, pauseButton.getPosition().y);
@@ -80,11 +95,27 @@ namespace Drewski
 				this->data->window.close();
 			}
 
+			/*
 			if (sf::Event::TextEntered == sfEvent.type)
 			{
 				if (sfEvent.text.unicode < 128)
 				{
 					cout << static_cast<char>(sfEvent.text.unicode) << endl;
+				}
+			}
+			*/
+
+			// display to screen string (RAW)
+			// if that text is click,
+			// getString (RAW) and use it as index in unordered_map<string (RAW), SearchWord)>
+			// toggle SearchWord isDisplaying
+			// In draw function, iterate through and outline displaying searchwords based on x1, y1, x2, y2, coordinates
+			for (auto iterator = data->assetManager.getTextMap().begin(); iterator != data->assetManager.getTextMap().end(); iterator++)
+			{
+				if (data->inputManager.isTextClicked(iterator->second, sf::Mouse::Left, this->data->window))
+				{
+					string out = iterator->second.getString();
+					cout << out << endl;
 				}
 			}
 
@@ -115,7 +146,7 @@ namespace Drewski
 
 	void GameState::draw(float deltaTimeIn)
 	{
-		this->data->window.clear(sf::Color::Cyan);
+		this->data->window.clear(sf::Color::Black);
 		//this->data->window.clear();
 #if 0
 		this->data->window.draw(this->background);
@@ -226,6 +257,21 @@ namespace Drewski
 		
 		
 		//this->data->window.draw(this->background);
+
+		sf::Image centerImage;
+		sf::Sprite centerSprite;
+		sf::Texture centerTexture;
+
+		centerImage.create(30, SCREEN_HEIGHT, sf::Color(255, 255, 255, 255));
+
+		centerTexture.create(30, SCREEN_HEIGHT);
+		centerTexture.loadFromImage(centerImage);
+
+		centerSprite.setTexture(centerTexture);
+
+		centerSprite.setPosition(SCREEN_WIDTH / 2, centerSprite.getPosition().y);
+
+		this->data->window.draw(centerSprite);
 
 		this->data->window.draw(this->pauseButton);
 

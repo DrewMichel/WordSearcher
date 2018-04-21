@@ -34,6 +34,11 @@ const std::string O_PIECE_WON_FILEPATH = "Resources/res/O Win.png";
 const std::string GRID_SPRITE_FILEPATH = "Resources/res/Grid.png";
 
 const std::string FONT_ARIAL_FILEPATH = "Resources/font/arial.ttf";
+const std::string FONT_COURIER_NEW_FILEPATH = "Resources/font/cour.ttf";
+const std::string FONT_COURIER_NEW_BOLD_FILEPATH = "Resources/font/courbd.ttf";
+
+const std::string DEFAULT_GRID_FILEPATH = "Resources/grid/grid.txt";
+const std::string DEFAULT_SEARCH_FILEPATH = "Resources/search/search.txt";
 
 const int GRID_WIDTH = 3, GRID_HEIGHT = 3;
 

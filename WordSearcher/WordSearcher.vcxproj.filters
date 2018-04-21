@@ -54,6 +54,12 @@
     <ClCompile Include="PerlinWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SearchWord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WordSanitizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -96,6 +102,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PerlinWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchWord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSanitizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

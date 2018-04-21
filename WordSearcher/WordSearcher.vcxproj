@@ -138,8 +138,10 @@
     <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="PerlinWrapper.cpp" />
     <ClCompile Include="ppm.cpp" />
+    <ClCompile Include="SearchWord.cpp" />
     <ClCompile Include="SplashState.cpp" />
     <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="WordSanitizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
@@ -153,9 +155,11 @@
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="PerlinWrapper.h" />
     <ClInclude Include="ppm.h" />
+    <ClInclude Include="SearchWord.h" />
     <ClInclude Include="SplashState.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="WordSanitizer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

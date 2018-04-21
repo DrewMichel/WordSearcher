@@ -21,6 +21,11 @@ namespace Drewski
 		return (sf::Mouse::isButtonPressed(button) && object.getGlobalBounds().contains((float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y));
 	}
 
+	bool InputManager::isTextClicked(sf::Text object, sf::Mouse::Button button, sf::RenderWindow &window)
+	{
+		return (sf::Mouse::isButtonPressed(button) && object.getGlobalBounds().contains((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y));
+	}
+
 	sf::Vector2i InputManager::getMousePosition(sf::RenderWindow &window)
 	{
 		return sf::Mouse::getPosition(window);
