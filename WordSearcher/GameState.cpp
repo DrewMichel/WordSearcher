@@ -24,14 +24,18 @@ namespace Drewski
 		gameState = STATE_PLAYING;
 
 		this->data->assetManager.loadFont("arial", FONT_ARIAL_FILEPATH);
-
+		this->data->assetManager.loadTexture("Pause Button", PAUSE_BUTTON);
 		sf::Text text;
 		text.setFont(this->data->assetManager.getFont("arial"));
 		text.setString("BATMAN");
 		text.setFillColor(sf::Color::Red);
 		text.setCharacterSize(40);
 
-		this->data->assetManager.addText("TEST", text);
+		//this->data->assetManager.addText("TEST", text);
+
+		pauseButton.setTexture(this->data->assetManager.getTexture("Pause Button"));
+		pauseButton.setPosition(this->data->window.getSize().x - pauseButton.getLocalBounds().width, pauseButton.getPosition().y);
+		//pauseButton.setColor(sf::Color(0, 0, 0, 255));
 #if 0
 		turn = PLAYER_PIECE;
 
@@ -75,6 +79,15 @@ namespace Drewski
 			{
 				this->data->window.close();
 			}
+
+			if (sf::Event::TextEntered == sfEvent.type)
+			{
+				if (sfEvent.text.unicode < 128)
+				{
+					cout << static_cast<char>(sfEvent.text.unicode) << endl;
+				}
+			}
+
 #if 0
 			if (this->data->inputManager.isSpriteClicked(this->pauseButton, sf::Mouse::Left, this->data->window))
 			{
@@ -100,12 +113,10 @@ namespace Drewski
 
 	}
 
-	int counter = 0;
-
 	void GameState::draw(float deltaTimeIn)
 	{
-		//this->data->window.clear(sf::Color::Cyan);
-		this->data->window.clear();
+		this->data->window.clear(sf::Color::Cyan);
+		//this->data->window.clear();
 #if 0
 		this->data->window.draw(this->background);
 		this->data->window.draw(this->pauseButton);
@@ -120,11 +131,11 @@ namespace Drewski
 		}
 #endif
 #if 0
-		counter++;
-		if (counter > 60)
+		backgroundAnimationCounter++;
+		if (backgroundAnimationCounter > 60)
 		{
 			this->data->window.clear();
-			counter = 0;
+			backgroundAnimationCounter = 0;
 
 			PerlinNoise color;
 
@@ -160,15 +171,15 @@ namespace Drewski
 		}
 #endif
 
-#if 1
-		if (counter > 255)
+#if 0
+		if (backgroundAnimationCounter > 255)
 		{
-			counter = 0;
+			backgroundAnimationCounter = 0;
 		}
 
-		cout << "COUNTER: " << counter << endl;
+		cout << "COUNTER: " << backgroundAnimationCounter << endl;
 
-		counter++;
+		backgroundAnimationCounter++;
 		// TODO: MOVE TO MAIN MENU, USE ORBIT IN GAME
 		int number;
 
@@ -178,8 +189,18 @@ namespace Drewski
 			for (int x = 0; x < SCREEN_WIDTH; x++)
 			{
 				number = 4 * ((y * SCREEN_WIDTH) + x);
-				pixels[number] = counter + ((x / (float)SCREEN_WIDTH * 255));
-				pixels[number + 1] = (x / ((float)SCREEN_WIDTH * 5) * 255);
+
+				// RED
+				if (backgroundAnimationCounter + ((x / (float)SCREEN_WIDTH * 255)) <= 255)
+				{
+					pixels[number] = backgroundAnimationCounter + ((x / (float)SCREEN_WIDTH * 255));
+				}
+				else
+				{
+					pixels[number] = ((x / (float)SCREEN_WIDTH * 255)) - backgroundAnimationCounter;
+				}
+
+				pixels[number + 1] = (x / ((float)SCREEN_WIDTH * 5) * 255); // GREEN
 				pixels[number + 2] = (x / ((float)SCREEN_WIDTH * 5) * 255); // BLUE
 				pixels[number + 3] = 255; // ALPHA
 			}
@@ -205,6 +226,8 @@ namespace Drewski
 		
 		
 		//this->data->window.draw(this->background);
+
+		this->data->window.draw(this->pauseButton);
 
 		for (auto iterator = this->data->assetManager.getTextMap().begin(); iterator != this->data->assetManager.getTextMap().end(); iterator++)
 		{

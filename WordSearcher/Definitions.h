@@ -11,7 +11,10 @@ const float SPLASH_STATE_SHOW_TIME = 3.0f;
 const std::string SPLASH_SCENE_BACKGROUND_FILEPATH = "Resources/res/sunset-1957350_1920.jpg";
 
 const std::string MAIN_MENU_BACKGROUND_FILEPATH = "Resources/res/Main Menu Background.png";
-const std::string MAIN_MENU_TITLE_PATH = "Resources/res/Game Title.png";
+
+//const std::string MAIN_MENU_TITLE_PATH = "Resources/res/Game Title.png";
+const std::string MAIN_MENU_TITLE_PATH = "Resources/res/152426852944149923.png";
+
 const std::string MAIN_MENU_PLAY_BUTTON = "Resources/res/Play Button.png";
 const std::string MAIN_MENU_PLAY_BUTTON_OUTER = "Resources/res/Play Button Outer.png";
 
