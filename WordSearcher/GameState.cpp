@@ -10,6 +10,10 @@
 
 namespace Drewski
 {
+	// Global sf::Text operator function for <
+	bool operator<(const sf::Text& one, const sf::Text& two);
+
+	// Constructor
 	GameState::GameState(GameDataRef dataIn) : data(dataIn)
 	{
 
@@ -41,22 +45,14 @@ namespace Drewski
 	}
 	*/
 
-	inline bool operator<(const sf::Text& one, const sf::Text& two)
-	{
-		string curOne = one.getString();
-		string curTwo = two.getString();
-
-		cout << "COMPARING: " << curOne << " < " << curTwo << " == " << (curOne < curTwo) << endl;
-
-		return curOne < curTwo;
-	}
+	
 
 	void GameState::init()
 	{
-		gameState = STATE_PLAYING;
+		//gameState = STATE_PLAYING;
 
 		this->data->assetManager.loadFont("courier new bold", FONT_COURIER_NEW_BOLD_FILEPATH);
-		this->data->assetManager.loadTexture("Pause Button", PAUSE_BUTTON);
+		//this->data->assetManager.loadTexture("Pause Button", PAUSE_BUTTON);
 		/*
 		sf::Text text;
 		text.setFont(this->data->assetManager.getFont("arial"));
@@ -97,12 +93,16 @@ namespace Drewski
 		}
 
 		sort(data->assetManager.getSearchTextVector().begin(), data->assetManager.getSearchTextVector().end(), operator<);
+
 		index = 0;
+
 		for (auto iterator = data->assetManager.getSearchTextVector().begin(); iterator != data->assetManager.getSearchTextVector().end(); iterator++)
 		{
 			iterator->setPosition(iterator->getPosition().x + (25 * 2) + (SCREEN_WIDTH / 2), iterator->getPosition().y + 25 + (index * 20));
 			index++;
 		}
+
+		//data->assetManager.addOrb("ADAMS", SearchOrb(200, 200, 200, 200, 200));
 
 		cout << "ORIGINAL SEARCH SIZE: " << data->originalSearch.size() << endl;
 
@@ -115,8 +115,8 @@ namespace Drewski
 		// TODO: IF SEARCHWORD IS OUTLINING, DISPLAY ORBS IN DRAW
 
 
-		pauseButton.setTexture(this->data->assetManager.getTexture("Pause Button"));
-		pauseButton.setPosition(this->data->window.getSize().x - pauseButton.getLocalBounds().width, pauseButton.getPosition().y);
+		//pauseButton.setTexture(this->data->assetManager.getTexture("Pause Button"));
+		//pauseButton.setPosition(this->data->window.getSize().x - pauseButton.getLocalBounds().width, pauseButton.getPosition().y);
 		//pauseButton.setColor(sf::Color(0, 0, 0, 255));
 #if 0
 		turn = PLAYER_PIECE;
@@ -184,10 +184,17 @@ namespace Drewski
 					string name = iterator->getString();
 
 					data->originalSearch[name].flipOutlining();
-					cout << name << endl;
+					
+					if (data->originalSearch[name].getOutlining())
+					{
+						iterator->setFillColor(sf::Color(0, 255, 255, 255));
+					}
+					else
+					{
+						iterator->setFillColor(sf::Color(255, 215, 0, 255));
+					}
 				}
 			}
-
 #if 0
 			if (this->data->inputManager.isSpriteClicked(this->pauseButton, sf::Mouse::Left, this->data->window))
 			{
@@ -342,12 +349,14 @@ namespace Drewski
 
 		this->data->window.draw(centerSprite);
 
-		this->data->window.draw(this->pauseButton);
+		//this->data->window.draw(this->pauseButton);
 
-		for (auto iterator = this->data->assetManager.getGridTextMap().begin(); iterator != this->data->assetManager.getGridTextMap().end(); iterator++)
+		/*
+		for (auto iterator = this->data->assetManager.getOrbMap().begin(); iterator != this->data->assetManager.getOrbMap().end(); iterator++)
 		{
-			this->data->window.draw(iterator->second);
+			this->data->window.draw(iterator->second.getCircle());
 		}
+		*/
 
 		for (auto iterator = this->data->assetManager.getSearchTextVector().begin(); iterator != this->data->assetManager.getSearchTextVector().end(); iterator++)
 		{
@@ -357,303 +366,29 @@ namespace Drewski
 			// Place orbs into unordered_map<string (RAW), Orb> with x1, y1, x2, y2 from SearchWord
 			if (this->data->originalSearch[name].getOutlining())
 			{
-				this->data->window.draw(*iterator);
+				this->data->window.draw(this->data->assetManager.getOrb(name).getCircle());
 			}
 
-			//this->data->window.draw(*iterator);
+			this->data->window.draw(*iterator);
 		}
+
+		for (auto iterator = this->data->assetManager.getGridTextMap().begin(); iterator != this->data->assetManager.getGridTextMap().end(); iterator++)
+		{
+			this->data->window.draw(iterator->second);
+		}
+
+		
 
 		this->data->window.display();
 	}
 
-	void GameState::initGridPieces()
+	bool operator<(const sf::Text& one, const sf::Text& two)
 	{
-		sf::Vector2u tempSpriteSize = this->data->assetManager.getTexture("X Piece").getSize();
+		string curOne = one.getString();
+		string curTwo = two.getString();
 
-		for (int y = 0; y < GRID_HEIGHT; y++)
-		{
-			for (int x = 0; x < GRID_WIDTH; x++)
-			{
-				gridPieces[(y * GRID_HEIGHT) + x].setTexture(this->data->assetManager.getTexture("X Piece"));
-				gridPieces[(y * GRID_HEIGHT) + x].setPosition(gridSprite.getPosition().x + (tempSpriteSize.x * x) - 7, gridSprite.getPosition().y + (tempSpriteSize.y * y) - 7);
+		//cout << "COMPARING: " << curOne << " < " << curTwo << " == " << (curOne < curTwo) << endl;
 
-				//std::cout << x << ", " << y << " : " << gridPieces[y][x].getPosition().x << ", " << gridPieces[y][x].getPosition().y << endl;
-
-				gridPieces[(y * GRID_HEIGHT) + x].setColor(sf::Color(255, 255, 255, 0));
-			}
-		}
-	}
-
-	void GameState::checkAndPlacePiece()
-	{
-		sf::Vector2i touchPoint = this->data->inputManager.getMousePosition(this->data->window);
-		sf::FloatRect gridSize = gridSprite.getGlobalBounds();
-		sf::Vector2f gapOutsideOfGrid = sf::Vector2f((SCREEN_WIDTH - gridSize.width) / 2, (SCREEN_HEIGHT - gridSize.height) / 2);
-		sf::Vector2f gridLocalTouchPos = sf::Vector2f(touchPoint.x - gapOutsideOfGrid.x, touchPoint.y - gapOutsideOfGrid.y);
-		sf::Vector2f gridSectionSize = sf::Vector2f(gridSize.width / GRID_WIDTH, gridSize.height / GRID_HEIGHT);
-
-		int column, row;
-
-		for (int x = GRID_WIDTH - 1; x >= 0 ; x--)
-		{
-			if (gridLocalTouchPos.x < gridSectionSize.x * (x + 1))
-			{
-				column = x;
-			}
-		}
-
-		for (int y = GRID_HEIGHT - 1; y >= 0; y--)
-		{
-			if (gridLocalTouchPos.y < gridSectionSize.y * (y + 1))
-			{
-				row = y;
-			}
-		}
-
-		cout << "GAME STATE: " << gameState << endl;
-		if (gridArray[(row * GRID_HEIGHT ) + column] == EMPTY_PIECE && gameState == STATE_PLAYING)
-		{
-			gridArray[(row * GRID_HEIGHT) + column] = turn;
-
-			if (PLAYER_PIECE == turn)
-			{
-				gridPieces[(row * GRID_HEIGHT) + column].setTexture(this->data->assetManager.getTexture("X Piece"));
-
-				this->checkPlayerHasWon(turn);
-
-				turn = AI_PIECE;
-			}
-			else if (AI_PIECE == turn)
-			{
-				gridPieces[(row * GRID_HEIGHT) + column].setTexture(this->data->assetManager.getTexture("O Piece"));
-
-				this->checkPlayerHasWon(turn);
-
-				turn = PLAYER_PIECE;
-			}
-
-			gridPieces[(row * GRID_HEIGHT) + column].setColor(sf::Color(255, 255, 255, 255));
-		}
-	}
-
-	void GameState::checkPlayerHasWon(int turn)
-	{
-		vector<int> winningIndices;
-
-		checkHorizontalMatch(turn, winningIndices);
-		checkVerticalMatch(turn, winningIndices);
-		checkDiagonalDownMatch(turn, winningIndices);
-		checkDiagonalUpMatch(turn, winningIndices);
-		checkDrawMatch();
-
-		if ((gameState == STATE_DRAW || gameState == STATE_LOSE || gameState == STATE_WON) && ((winningIndices.size() / 2) >= WIN_REQUIREMENT))
-		{
-			if (gameState == STATE_WON)
-			{
-				for (int i = 0; i < winningIndices.size(); i+=2)
-				{
-					gridPieces[(winningIndices[i] * GRID_HEIGHT) + winningIndices[i + 1]].setTexture(this->data->assetManager.getTexture("X Piece Won"));
-					cout << winningIndices[i + 1] << ", " << (winningIndices[i]) << endl;
-				}
-			}
-			else if (gameState == STATE_LOSE)
-			{
-				for (int i = 0; i < winningIndices.size(); i+=2)
-				{
-					gridPieces[(winningIndices[i] * GRID_HEIGHT) + winningIndices[i + 1]].setTexture(this->data->assetManager.getTexture("O Piece Won"));
-				}
-			}
-		}
-	}
-
-	// x x x
-	void GameState::checkHorizontalMatch(int pieceToCheck, vector<int>& winningIndices)
-	{
-		int pieceMatches = 0;
-		bool ongoing = true;
-
-		if (gameState == STATE_PLAYING)
-		{
-			for (int y = 0; y < GRID_HEIGHT && ongoing; y++)
-			{
-				pieceMatches = 0;
-				winningIndices.clear();
-
-				for (int x = 0; x < GRID_WIDTH && ongoing; x++)
-				{
-					if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
-					{
-						pieceMatches++;
-						winningIndices.push_back(y);
-						winningIndices.push_back(x);
-
-						if (pieceMatches >= WIN_REQUIREMENT)
-						{
-							ongoing = false;
-							
-							if (pieceToCheck == PLAYER_PIECE)
-							{
-								gameState = STATE_WON;
-							}
-							else if(pieceToCheck == AI_PIECE)
-							{
-								gameState = STATE_LOSE;
-							}
-							std::cout << "HORIZONTAL" << endl;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// x
-	// x
-	// x
-	void GameState::checkVerticalMatch(int pieceToCheck, vector<int>& winningIndices)
-	{
-		int pieceMatches = 0;
-		bool ongoing = true;
-
-		if (gameState == STATE_PLAYING)
-		{
-			for (int x = 0; x < GRID_WIDTH && ongoing; x++)
-			{
-				pieceMatches = 0;
-				winningIndices.clear();
-
-				for (int y = 0; y < GRID_HEIGHT && ongoing; y++)
-				{
-					if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
-					{
-						pieceMatches++;
-						winningIndices.push_back(y);
-						winningIndices.push_back(x);
-
-						if (pieceMatches >= WIN_REQUIREMENT)
-						{
-							ongoing = false;
-
-							if (pieceToCheck == PLAYER_PIECE)
-							{
-								gameState = STATE_WON;
-							}
-							else if (pieceToCheck == AI_PIECE)
-							{
-								
-								gameState = STATE_LOSE;
-							}
-							std::cout << "VERTICAL" << endl;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// x
-	//  x
-	//   x
-	void GameState::checkDiagonalDownMatch(int pieceToCheck, vector<int>& winningIndices)
-	{
-		int pieceMatches = 0;
-		bool ongoing = true;
-
-		if (gameState == STATE_PLAYING)
-		{
-			winningIndices.clear();
-
-			for (int i = 0; i < GRID_HEIGHT && i < GRID_WIDTH && ongoing; i++)
-			{
-				if (gridArray[(i * GRID_HEIGHT) + i] == pieceToCheck)
-				{
-					pieceMatches++;
-					winningIndices.push_back(i);
-					winningIndices.push_back(i);
-
-					if (pieceMatches >= WIN_REQUIREMENT)
-					{
-						ongoing = false;
-
-						if (pieceToCheck == PLAYER_PIECE)
-						{
-							gameState = STATE_WON;
-						}
-						else if (pieceToCheck == AI_PIECE)
-						{
-							gameState = STATE_LOSE;
-						}
-						std::cout << "DIAGONAL DOWN" << endl;
-					}
-				}
-			}
-		}
-	}
-
-	//   x
-	//  x
-	// x
-	void GameState::checkDiagonalUpMatch(int pieceToCheck, vector<int>& winningIndices)
-	{
-		int pieceMatches = 0;
-		bool ongoing = true;
-		int y = GRID_HEIGHT - 1, x = 0;
-
-		if (gameState == STATE_PLAYING)
-		{
-			winningIndices.clear();
-
-			while(y >= 0 && y < GRID_HEIGHT && x >= 0 && x < GRID_WIDTH && ongoing)
-			{
-				if (gridArray[(y * GRID_HEIGHT) + x] == pieceToCheck)
-				{
-					pieceMatches++;
-					winningIndices.push_back(y);
-					winningIndices.push_back(x);
-
-					if (pieceMatches >= WIN_REQUIREMENT)
-					{
-						ongoing = false;
-
-						if (pieceToCheck == PLAYER_PIECE)
-						{
-							gameState = STATE_WON;
-						}
-						else if (pieceToCheck == AI_PIECE)
-						{
-							gameState = STATE_LOSE;
-						}
-						std::cout << "DIAGONAL UP" << endl;
-					}
-				}
-				y--;
-				x++;
-			}
-		}
-	}
-
-	void GameState::checkDrawMatch()
-	{
-		bool undetected = true;
-
-		if (gameState == STATE_PLAYING)
-		{
-			for (int y = 0; y < GRID_HEIGHT && undetected; y++)
-			{
-				for (int x = 0; x < GRID_WIDTH && undetected; x++)
-				{
-					if (gridArray[(y * GRID_HEIGHT) + x] == EMPTY_PIECE)
-					{
-						undetected = false;
-					}
-				}
-			}
-
-			if (undetected)
-			{
-				gameState = STATE_DRAW;
-				std::cout << "DRAW" << endl;
-			}
-		}
+		return curOne < curTwo;
 	}
 }

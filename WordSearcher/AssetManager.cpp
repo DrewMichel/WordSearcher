@@ -69,4 +69,19 @@ namespace Drewski
 		return perlin;
 	}
 	*/
+
+	void AssetManager::addOrb(string name, SearchOrb orb)
+	{
+		orbMap[name] = orb;
+	}
+
+	SearchOrb &AssetManager::getOrb(string name)
+	{
+		return orbMap[name];
+	}
+
+	unordered_map<string, SearchOrb> &AssetManager::getOrbMap()
+	{
+		return orbMap;
+	}
 }

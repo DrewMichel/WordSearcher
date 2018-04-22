@@ -6,6 +6,7 @@
 #include <SFML\Graphics.hpp>
 #include "PerlinWrapper.h"
 #include <vector>
+#include "SearchOrb.h"
 
 using namespace std;
 
@@ -34,12 +35,18 @@ namespace Drewski
 			vector<sf::Text> &getSearchTextVector();
 			//PerlinWrapper &getPerlin();
 
+			void addOrb(string name, SearchOrb orb);
+
+			SearchOrb &getOrb(string name);
+
+			unordered_map<string, SearchOrb> &getOrbMap();
+
 		private:
 			unordered_map<string, sf::Texture> textureMap;
 			unordered_map<string, sf::Font> fontMap;
 			unordered_map<string, sf::Text> gridTextMap;
 			vector<sf::Text> searchTextVector;
-
+			unordered_map<string, SearchOrb> orbMap;
 			//PerlinWrapper perlin;
 	};
 }

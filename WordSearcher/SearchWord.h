@@ -18,7 +18,7 @@ class SearchWord
 
         // Constructor
         SearchWord();
-		SearchWord(const string& originalIn, bool foundIn = false);
+		SearchWord(const string& originalIn, bool foundIn = false, bool outliningIn = false);
         
         // Destructor
         ~SearchWord();

@@ -138,6 +138,7 @@
     <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="PerlinWrapper.cpp" />
     <ClCompile Include="ppm.cpp" />
+    <ClCompile Include="SearchOrb.cpp" />
     <ClCompile Include="SearchWord.cpp" />
     <ClCompile Include="SplashState.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="PerlinWrapper.h" />
     <ClInclude Include="ppm.h" />
+    <ClInclude Include="SearchOrb.h" />
     <ClInclude Include="SearchWord.h" />
     <ClInclude Include="SplashState.h" />
     <ClInclude Include="State.h" />

@@ -12,26 +12,14 @@ namespace Drewski
 	private:
 		GameDataRef data;
 		sf::Sprite background;
-		sf::Sprite pauseButton;
-		sf::Sprite gridSprite;
-		sf::Sprite gridPieces[GRID_HEIGHT * GRID_WIDTH];
+		//sf::Sprite pauseButton;
+		//sf::Sprite gridSprite;
+		//sf::Sprite gridPieces[GRID_HEIGHT * GRID_WIDTH];
 
-		int gridArray[GRID_HEIGHT * GRID_WIDTH];
+		//int gridArray[GRID_HEIGHT * GRID_WIDTH];
 
-		int turn;
-		int gameState;
-
-		void initGridPieces();
-		
-		void checkAndPlacePiece();
-
-		void checkPlayerHasWon(int turn);
-
-		void checkHorizontalMatch(int pieceToCheck, std::vector<int>& winningIndices);
-		void checkVerticalMatch(int pieceToCheck, std::vector<int>& winningIndices);
-		void checkDiagonalDownMatch(int pieceToCheck, std::vector<int>& winningIndices);
-		void checkDiagonalUpMatch(int pieceToCheck, std::vector<int>& winningIndices);
-		void checkDrawMatch();
+		//int turn;
+		//int gameState;
 
 	public:
 		GameState(GameDataRef dataIn);

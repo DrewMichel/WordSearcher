@@ -1,6 +1,6 @@
 #include "SearchWord.h"
 
-SearchWord::SearchWord() : original(" 3v3ryth.ng wr0ng "), word(original), found(false)
+SearchWord::SearchWord() : original(" 3v3ryth.ng wr0ng "), word(original), found(false), outlining(false)
 {
 	xStart = 0;
 	yStart = 0;
@@ -10,7 +10,7 @@ SearchWord::SearchWord() : original(" 3v3ryth.ng wr0ng "), word(original), found
 	word = WordSanitizer::sanitize(original);
 }
 
-SearchWord::SearchWord(const string& originalIn, bool foundIn) : found(foundIn)
+SearchWord::SearchWord(const string& originalIn, bool foundIn, bool outliningIn) : found(foundIn), outlining(outliningIn)
 {
 	original = originalIn;
 	xStart = 0;

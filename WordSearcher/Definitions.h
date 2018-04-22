@@ -59,4 +59,10 @@ const int STATE_PLACING_PIECE = 54;
 const int STATE_AI_PLAYING = 55;
 const int STATE_DRAW = 56;
 
+const int ORB_RADIUS = 20;
+const int ORB_X_CAP = 3;
+const int ORB_Y_CAP = 3;
+const int ORB_X_SPEED = 3;
+const int ORB_Y_SPEED = 3;
+
 #endif
