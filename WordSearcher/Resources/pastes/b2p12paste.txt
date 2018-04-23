@@ -1,0 +1,2 @@
+Resources/grid/b2p12grid.txt
+Resources/search/b2p12search.txt

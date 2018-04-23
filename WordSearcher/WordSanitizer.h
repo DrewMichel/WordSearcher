@@ -20,6 +20,7 @@ class WordSanitizer
         static string capitalize(const string& incoming);
 		static string reverse(const string& incoming);
 		static string smudge(const string& incoming);
+		static string removeWhitespace(const string& incoming);
 };
 
 #endif

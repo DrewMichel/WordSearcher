@@ -29,6 +29,14 @@ namespace Drewski
 		void handleInput();
 		void update(float deltaTimeIn);
 		void draw(float deltaTimeIn);
+
+		void solve();
+		void scanHorizontally();
+		void scanVertically();
+		void scanDiagonallyDown();
+		void scanDiagonallyDownTop();
+		void scanDiagonallyDownBottom();
+		void scanDiagonallyUp();
 	};
 }
 

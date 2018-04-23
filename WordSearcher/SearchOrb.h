@@ -10,7 +10,7 @@ namespace Drewski
 	{
 		public:
 			int xBound1, yBound1, xBound2, yBound2;
-			int xCap, yCap;
+			int distanceCap;
 			int xSpeed, ySpeed;
 			sf::CircleShape circle;
 
@@ -21,6 +21,8 @@ namespace Drewski
 			~SearchOrb();
 
 			sf::CircleShape &getCircle();
+
+			void update();
 	};
 }
 

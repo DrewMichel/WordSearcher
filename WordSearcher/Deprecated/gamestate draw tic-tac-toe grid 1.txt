@@ -1,0 +1,13 @@
+#if 0
+		this->data->window.draw(this->background);
+		this->data->window.draw(this->pauseButton);
+		this->data->window.draw(gridSprite);
+
+		for (int y = 0; y < GRID_HEIGHT; y++)
+		{
+			for (int x = 0; x < GRID_WIDTH; x++)
+			{
+				this->data->window.draw(gridPieces[(y * GRID_HEIGHT) + x]);
+			}
+		}
+#endif

@@ -1,0 +1,40 @@
+#if 0
+		backgroundAnimationCounter++;
+		if (backgroundAnimationCounter > 60)
+		{
+			this->data->window.clear();
+			backgroundAnimationCounter = 0;
+
+			PerlinNoise color;
+
+			double speed = 0.05f, z = 0.5f;
+			int number;
+			int random = rand();
+
+			sf::Uint8 *pixels = new sf::Uint8[SCREEN_WIDTH * SCREEN_HEIGHT * 4];
+			for (int y = 0; y < SCREEN_HEIGHT; y++)
+			{
+				for (int x = 0; x < SCREEN_WIDTH; x++)
+				{
+					number = 4 * ((y * SCREEN_WIDTH) + x);
+					pixels[number] = color.noise(x * speed, y * speed, z) * 255; // RED
+					pixels[number + 1] = color.noise(x * speed + random, y * speed + random, z) * 255; // GREEN
+					pixels[number + 2] = color.noise(x * speed + random * random, y * speed + random * random, z) * 255; // BLUE
+					pixels[number + 3] = 255; // ALPHA
+				}
+			}
+
+			sf::Image image;
+			sf::Texture texture;
+			sf::Sprite sprite;
+
+			image.create(SCREEN_WIDTH, SCREEN_HEIGHT, pixels);
+			texture.create(SCREEN_WIDTH, SCREEN_HEIGHT);
+			texture.loadFromImage(image);
+			sprite.setTexture(texture);
+
+			this->data->window.draw(sprite);
+
+			delete[] pixels;
+		}
+#endif

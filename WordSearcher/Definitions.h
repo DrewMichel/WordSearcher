@@ -5,7 +5,7 @@
 #include <string>
 
 const int SCREEN_WIDTH = 1080, SCREEN_HEIGHT = 720;
-const std::string DEFAULT_GAME_TITLE = "SFML Tutorial";
+const std::string DEFAULT_GAME_TITLE = "Word Searcher";
 
 const float SPLASH_STATE_SHOW_TIME = 3.0f;
 const std::string SPLASH_SCENE_BACKGROUND_FILEPATH = "Resources/res/sunset-1957350_1920.jpg";
@@ -60,8 +60,7 @@ const int STATE_AI_PLAYING = 55;
 const int STATE_DRAW = 56;
 
 const int ORB_RADIUS = 20;
-const int ORB_X_CAP = 3;
-const int ORB_Y_CAP = 3;
+const int ORB_DISTANCE_CAP = 3;
 const int ORB_X_SPEED = 3;
 const int ORB_Y_SPEED = 3;
 

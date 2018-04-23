@@ -1,0 +1,30 @@
+#if 0
+		turn = PLAYER_PIECE;
+
+		this->data->assetManager.loadTexture("Game Background", GAME_BACKGROUND_FILEPATH);
+		this->data->assetManager.loadTexture("Pause Button", PAUSE_BUTTON);
+		this->data->assetManager.loadTexture("Grid Sprite", GRID_SPRITE_FILEPATH);
+
+		this->data->assetManager.loadTexture("X Piece", X_PIECE_FILEPATH);
+		this->data->assetManager.loadTexture("O Piece", O_PIECE_FILEPATH);
+
+		this->data->assetManager.loadTexture("X Piece Won", X_PIECE_WON_FILEPATH);
+		this->data->assetManager.loadTexture("O Piece Won", O_PIECE_WON_FILEPATH);
+
+		background.setTexture(this->data->assetManager.getTexture("Game Background"));
+		pauseButton.setTexture(this->data->assetManager.getTexture("Pause Button"));
+		gridSprite.setTexture(this->data->assetManager.getTexture("Grid Sprite"));
+
+		pauseButton.setPosition(this->data->window.getSize().x - pauseButton.getLocalBounds().width, pauseButton.getPosition().y);
+		gridSprite.setPosition((SCREEN_WIDTH / 2) - (gridSprite.getGlobalBounds().width / 2), (SCREEN_HEIGHT / 2) - (gridSprite.getGlobalBounds().height / 2));
+
+		initGridPieces();
+
+		for (int y = 0; y < GRID_HEIGHT; y++)
+		{
+			for (int x = 0; x < GRID_WIDTH; x++)
+			{
+				gridArray[(y * GRID_HEIGHT) + x ] = EMPTY_PIECE;
+			}
+		}
+#endif

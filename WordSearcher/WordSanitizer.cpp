@@ -111,3 +111,21 @@ string WordSanitizer::smudge(const string& incoming)
 
 	return output;
 }
+
+string WordSanitizer::removeWhitespace(const string& incoming)
+{
+	string output;
+	char current;
+
+	for (int i = 0; i < incoming.size(); i++)
+	{
+		current = incoming.at(i);
+
+		if (!isspace(current))
+		{
+			output.push_back(current);
+		}
+	}
+
+	return output;
+}
