@@ -37,6 +37,8 @@ namespace Drewski
 		void scanDiagonallyDownTop();
 		void scanDiagonallyDownBottom();
 		void scanDiagonallyUp();
+		void scanDiagonallyUpTop();
+		void scanDiagonallyUpBottom();
 	};
 }
 

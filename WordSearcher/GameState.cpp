@@ -316,20 +316,22 @@ namespace Drewski
 		// scan bottom
 	}
 
+	// axx
+	//  bx
+	//   c
 	void GameState::scanDiagonallyDownTop()
 	{
 		string current;
-
-		// ADAMS
 		
 		if (data->grid.size() > 0)
 		{
-			// scan top of screen ( increasing indices )
+			// scan top of screen ( x, y, end)
 			for (int x = 0; x < data->grid[0].size(); x++)
 			{
 				for (int y = 0; y < data->grid.size(); y++)
 				{
 					current.clear();
+					// for(int end = y + 1
 					for (int end = y; end < data->grid.size() && end + x < data->grid[y].size(); end++)
 					{
 						current.push_back(data->grid[end][x + end]);
@@ -342,74 +344,110 @@ namespace Drewski
 				}
 			}
 		}
-		
+	}
 
-		// NICE
-		/*
+	// ooo
+	// aoo
+	// xbo
+	void GameState::scanDiagonallyDownBottom()
+	{
+		string current;
+
+		// scan bottom of screen ( y, x, end)
+
+		// 0 checked by top
 		if (data->grid.size() > 0)
 		{
-			// scan top of screen ( increasing indices )
-			for (int x = 0; x < data->grid[0].size(); x++)
+			for (int y = 1; y < data->grid.size(); y++)
 			{
-				for (int y = 0; y < data->grid.size(); y++)
+				for (int offset = 0; offset + y < data->grid.size() && offset < data->grid[y].size(); offset++)
 				{
 					current.clear();
-					for (int end = y; end < data->grid.size() && end + x < data->grid[y].size(); end++)
+					// for(int end = offset + 1
+					for (int end = offset; end + y < data->grid.size() && end < data->grid[y].size(); end++)
 					{
-						current.push_back(data->grid[end][x + end]);
+						current.push_back(data->grid[y + end][end]);
 
 						if (data->parseSearch.count(current) > 0)
 						{
-							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(x + end / 2, y, x + end, end));
+							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(offset, offset + y, end, y + end));
 						}
 					}
 				}
 			}
 		}
-		*/
 	}
-	void GameState::scanDiagonallyDownBottom()
-	{
-		string current;
 
-		// scan bottom of screen ( decreasing indices)
 
-		// 0 checked by top
-
-		/*
-		if (data->grid.size() > 0)
-		{
-			for (int x = 0; x < data->grid[0].size(); x++)
-			{
-				for (int y = data->grid.size() - 1; y >= 1; y--)
-				{
-					current.clear();
-					for (int end = x; end + y < data->grid.size() && end < data->grid[y].size(); end++)
-					{
-						current.push_back(data->grid[end + y][x]);
-					}
-				}
-			}
-			
-		}
-		*/
-		
-	}
 
 	//   x
 	//  x
 	// x
 	void GameState::scanDiagonallyUp()
 	{
+		scanDiagonallyUpTop();
+		scanDiagonallyUpBottom();
+	}
 
+	void GameState::scanDiagonallyUpTop()
+	{
+		string current;
+
+		if (data->grid.size() > 0)
+		{
+			// scan top of screen
+			for (int y = 0; y < data->grid.size(); y++)
+			{
+				for (int offset = y; y - offset >= 0 && offset < data->grid[y].size(); offset--)
+				{
+					current.clear();
+					for (int end = offset; y - end >= 0 && end < data->grid[y].size(); end--)
+					{
+						current.push_back(data->grid[y - end][end]);
+
+						if (data->parseSearch.count(current) > 0)
+						{
+							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(offset, y - offset, end, y - end));
+						}
+					}
+				}
+			}
+		}
+		
+	}
+
+	void GameState::scanDiagonallyUpBottom()
+	{
+		string current;
+
+		
+		// scan bottom of screen
+		if (data->grid.size() > 0)
+		{
+			for (int x = 1; x < data->grid[0].size(); x++)
+			{
+				for (int offset = 0; data->grid.size() - offset >= 0 && offset + x < data->grid[data->grid.size() - 1 - offset].size(); offset++)
+				{
+					current.clear();
+					for (int end = offset; data->grid.size() - end >= 0 && end + x < data->grid[data->grid.size() - 1 - end].size(); end++)
+					{
+						current.push_back(data->grid[data->grid.size() - end - 1][x + end]);
+
+						if (data->parseSearch.count(current) > 0)
+						{
+							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(x + offset, data->grid.size() - 1 - offset, x + end, data->grid.size() - 1 - end));
+						}
+					}
+				}
+			}
+		}
+		
 	}
 
 	bool operator<(const sf::Text& one, const sf::Text& two)
 	{
 		string curOne = WordSanitizer::removeWhitespace(one.getString());
 		string curTwo = WordSanitizer::removeWhitespace(two.getString());
-
-		//cout << "COMPARING: " << curOne << " < " << curTwo << " == " << (curOne < curTwo) << endl;
 
 		return curOne < curTwo;
 	}
