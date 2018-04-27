@@ -336,7 +336,7 @@ namespace Drewski
 
 						if (data->parseSearch.count(current) > 0)
 						{
-							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(x, y, x + end, end));
+							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(x + y, y, x + end, end));
 						}
 					}
 				}

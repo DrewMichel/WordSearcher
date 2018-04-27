@@ -4,7 +4,7 @@
 
 namespace Drewski
 {
-	SearchOrb::SearchOrb(int xBound1In, int yBound1In, int xBound2In, int yBound2In, int radiusIn) : xBound1(xBound1In * 22 + 15), yBound1(yBound1In * 30 + 20), xBound2(xBound2In * 22 + 15), yBound2(yBound2In * 30 + 20), reversed(false)
+	SearchOrb::SearchOrb(int xBound1In, int yBound1In, int xBound2In, int yBound2In, int radiusIn) : xBound1(30 + (xBound1In * 22) ), yBound1(yBound1In * 30 + 34), xBound2(30 + (xBound2In * 22)), yBound2(yBound2In * 30 + 34), reversed(false)
 	{
 		reversed = false;
 		distanceCap = ORB_DISTANCE_CAP;
