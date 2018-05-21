@@ -5,29 +5,37 @@
 #include <SFML\Graphics.hpp>
 #include "Definitions.h"
 
+// Namespace declaration
 namespace Drewski
 {
+	// Failed attempt to utilize perlin noise generator.
+	// Unbearable framerates
 	struct PerlinWrapper
 	{
-		int width, height;
+		public:
+			// Member variables
+			int width, height;
 
-		double speed = 0.05;
+			double speed = 0.05;
 
-		sf::Uint8 *pixels;
-		sf::Image image;
-		sf::Texture texture;
-		sf::Sprite sprite;
-		PerlinNoise generator;
+			sf::Uint8 *pixels;
+			sf::Image image;
+			sf::Texture texture;
+			sf::Sprite sprite;
+			PerlinNoise generator;
 
-		PerlinWrapper(int widthIn = SCREEN_WIDTH, int heightIn = SCREEN_HEIGHT);
+			// Constructor
+			PerlinWrapper(int widthIn = SCREEN_WIDTH, int heightIn = SCREEN_HEIGHT);
 
-		~PerlinWrapper();
+			// Destructor
+			~PerlinWrapper();
 
-		sf::Sprite &getSprite();
+			sf::Sprite &getSprite();
 
-		void init(int widthIn = SCREEN_WIDTH, int heightIn = SCREEN_HEIGHT);
+			// Member function
+			void init(int widthIn = SCREEN_WIDTH, int heightIn = SCREEN_HEIGHT);
 
-		void update();
+			void update();
 	};
 }
 

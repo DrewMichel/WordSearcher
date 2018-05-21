@@ -1,23 +1,27 @@
+// IMPORTED PACKAGES:
 #include "GameOverState.h"
-#include "MainMenuState.h"
-
 #include <sstream>
 #include <iostream>
 #include "Definitions.h"
 #include "GameState.h"
+#include "MainMenuState.h"
 
+// Namespace declaration
 namespace Drewski
 {
+	// Constructor
 	GameOverState::GameOverState(GameDataRef dataIn) : data(dataIn)
 	{
 
 	}
 
+	// Destructor
 	GameOverState::~GameOverState()
 	{
 
 	}
 
+	// Function that is called to initialize the state
 	void GameOverState::init()
 	{
 		this->data->assetManager.loadTexture("Retry Button", RETRY_BUTTON);
@@ -31,6 +35,7 @@ namespace Drewski
 		this->homeButton.setPosition((this->data->window.getSize().x / 2) - (this->homeButton.getLocalBounds().width / 2), (this->data->window.getSize().y / 3 * 2) - (this->homeButton.getLocalBounds().height / 2));
 	}
 
+	// Function responsible for handling input on the state
 	void GameOverState::handleInput()
 	{
 		sf::Event sfEvent;
@@ -54,11 +59,13 @@ namespace Drewski
 		}
 	}
 
+	// Function responsible for updating the state
 	void GameOverState::update(float deltaTimeIn)
 	{
 
 	}
 
+	// Function responsible for drawing the state
 	void GameOverState::draw(float deltaTimeIn)
 	{
 		this->data->window.clear(sf::Color::Red);

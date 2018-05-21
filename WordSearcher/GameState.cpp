@@ -1,5 +1,5 @@
+// IMPORTED PACKAGES:
 #include "GameState.h"
-
 #include <sstream>
 #include <iostream>
 #include "PauseState.h"
@@ -8,9 +8,10 @@
 #include <chrono>
 #include <algorithm>
 
+// Namespace declaration
 namespace Drewski
 {
-	// Global sf::Text operator function for <
+	// Function prototype
 	bool operator<(const sf::Text& one, const sf::Text& two);
 
 	// Constructor
@@ -19,16 +20,20 @@ namespace Drewski
 
 	}
 
+	// Destructor
 	GameState::~GameState()
 	{
 
 	}
 
+	// Function responsible for initializing the state
 	void GameState::init()
 	{
 		//gameState = STATE_PLAYING;
 
+		// Loads font
 		this->data->assetManager.loadFont("courier new bold", FONT_COURIER_NEW_BOLD_FILEPATH);
+
 		//this->data->assetManager.loadTexture("Pause Button", PAUSE_BUTTON);
 		/*
 		sf::Text text;
@@ -40,6 +45,7 @@ namespace Drewski
 		this->data->assetManager.addGridText("TEST", text);
 		*/
 
+		// Generates graphical grid words and adds them to grid text unordered_map
 		for(int i = 0; i < data->grid.size(); i++)
 		{
 			sf::Text text;
@@ -57,6 +63,7 @@ namespace Drewski
 
 		int index = 0;
 
+		// Iterates over the original search unordered_map and creates and stores Text objects into search text vector
 		for (auto iterator = data->originalSearch.begin(); iterator != data->originalSearch.end(); iterator++)
 		{
 			sf::Text text;
@@ -67,20 +74,21 @@ namespace Drewski
 
 			//text.setPosition(text.getPosition().x + (25 * 2) + (SCREEN_WIDTH / 2), text.getPosition().y + 25 + (index * 20));
 
-			this->data->assetManager.addSearchText( text);
+			this->data->assetManager.addSearchText(text);
 			index++;
 		}
 
+		// Sorts the search text vector using global operator < overload
 		sort(data->assetManager.getSearchTextVector().begin(), data->assetManager.getSearchTextVector().end(), operator<);
 
 		index = 0;
 		int index2 = 0;
 
+		// Iterates over the sorted search text vector and assigns x and y positions to each search word based on position in vector
 		for (auto iterator = data->assetManager.getSearchTextVector().begin(); iterator != data->assetManager.getSearchTextVector().end(); iterator++)
 		{
 			if (25 + (index * 20) >= SCREEN_HEIGHT - 100)
 			{
-
 				iterator->setPosition(iterator->getPosition().x + (25 * 2) + (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 4), iterator->getPosition().y + 25 + (index2 * 20));
 				index2++;
 			}
@@ -94,6 +102,7 @@ namespace Drewski
 
 		//data->assetManager.addOrb("ADAMS", SearchOrb(200, 200, 200, 200, 200));
 
+		// Prints the number of original search words to console
 		cout << "ORIGINAL SEARCH SIZE: " << data->originalSearch.size() << endl;
 
 		// TODO: SEARCH FOR AND FILL SEARCHWORD COORDINATES
@@ -109,16 +118,20 @@ namespace Drewski
 		//pauseButton.setPosition(this->data->window.getSize().x - pauseButton.getLocalBounds().width, pauseButton.getPosition().y);
 		//pauseButton.setColor(sf::Color(0, 0, 0, 255));
 
+		// Solves the grid by scanning it for search targets
 		solve();
 	}
 
+	// Function responsible for handling input on state
 	void GameState::handleInput()
 	{
+		// Event variable used to capture events
 		sf::Event sfEvent;
 
+		// Loops while the event has unprocessed events
 		while (this->data->window.pollEvent(sfEvent))
 		{
-
+			// Closes the window if the event is of the correct type
 			if (sf::Event::Closed == sfEvent.type)
 			{
 				this->data->window.close();
@@ -139,14 +152,20 @@ namespace Drewski
 			// getString (RAW) and use it as index in unordered_map<string (RAW), SearchWord)>
 			// toggle SearchWord isDisplaying
 			// In draw function, iterate through and outline displaying searchwords based on x1, y1, x2, y2, coordinates
+
+			// Iterates through the search text vector and determines if any of the search words are being clicked
 			for (auto iterator = data->assetManager.getSearchTextVector().begin(); iterator != data->assetManager.getSearchTextVector().end(); iterator++)
 			{
+				// If the current search word is clicked
 				if (data->inputManager.isTextClicked(*iterator, sf::Mouse::Left, this->data->window))
 				{
+					// Get the string from the text object
 					string name = iterator->getString();
 
+					// Use the name to index into unordered_map and flip its selected state
 					data->originalSearch[name].flipOutlining();
 					
+					// Change color to yellow if unselected or cyan if selected
 					if (data->originalSearch[name].getOutlining())
 					{
 						iterator->setFillColor(sf::Color(0, 255, 255, 255));
@@ -177,16 +196,20 @@ namespace Drewski
 		}
 	}
 
+	// Function responsible for updating the state
 	void GameState::update(float deltaTimeIn)
 	{
+		// Iterates over the search orb map and calls update on each orb
 		for (auto iterator = data->assetManager.getOrbMap().begin(); iterator != data->assetManager.getOrbMap().end(); iterator++)
 		{
 			iterator->second.update();
 		}
 	}
 
+	// Function responsible for drawing the state
 	void GameState::draw(float deltaTimeIn)
 	{
+		// Clears the window and sets all pixels to black
 		this->data->window.clear(sf::Color::Black);
 		//this->data->window.clear();
 
@@ -194,13 +217,14 @@ namespace Drewski
 
 		//this->data->window.draw(this->data->assetManager.getPerlin().getSprite());
 		
-		
 		//this->data->window.draw(this->background);
 
+		// Declares variables
 		sf::Image centerImage;
 		sf::Sprite centerSprite;
 		sf::Texture centerTexture;
 
+		// Creates and image, a texture, and a sprite to draw background
 		centerImage.create(30, SCREEN_HEIGHT, sf::Color(255, 255, 255, 255));
 
 		centerTexture.create(30, SCREEN_HEIGHT);
@@ -210,6 +234,7 @@ namespace Drewski
 
 		centerSprite.setPosition(SCREEN_WIDTH / 2, centerSprite.getPosition().y);
 
+		// Draws background sprite
 		this->data->window.draw(centerSprite);
 
 		//this->data->window.draw(this->pauseButton);
@@ -221,8 +246,10 @@ namespace Drewski
 		}
 		*/
 
+		// Iterates over the search text vector to display each element
 		for (auto iterator = this->data->assetManager.getSearchTextVector().begin(); iterator != this->data->assetManager.getSearchTextVector().end(); iterator++)
 		{
+			// Gets the string from text object
 			string name = iterator->getString();
 
 			// HANDLE ORB DRAWING
@@ -232,19 +259,21 @@ namespace Drewski
 				this->data->window.draw(this->data->assetManager.getOrb(name).getCircle());
 			}
 
+			// Draws the text object
 			this->data->window.draw(*iterator);
 		}
 
+		// Iterates over the grid map and draws each element
 		for (auto iterator = this->data->assetManager.getGridTextMap().begin(); iterator != this->data->assetManager.getGridTextMap().end(); iterator++)
 		{
 			this->data->window.draw(iterator->second);
 		}
 
-		
-
+		// Updates or displays the window
 		this->data->window.display();
 	}
 
+	// Function that solves the grid by invoking other functions
 	void GameState::solve()
 	{
 		scanHorizontally();
@@ -254,6 +283,8 @@ namespace Drewski
 	}
 
 	// x x x
+
+	// Function that horizontally scans the grid for search targets
 	void GameState::scanHorizontally()
 	{
 		string current;
@@ -444,6 +475,7 @@ namespace Drewski
 		
 	}
 
+	// Global sf::Text operator function for <
 	bool operator<(const sf::Text& one, const sf::Text& two)
 	{
 		string curOne = WordSanitizer::removeWhitespace(one.getString());

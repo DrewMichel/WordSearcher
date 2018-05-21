@@ -1,14 +1,18 @@
 #ifndef SEARCH_WORD_H
 #define SEARCH_WORD_H
 
+// IMPORTED PACKAGES:
 #include <string>
 #include "WordSanitizer.h"
 
+// Namespace usage which allows the direct use of declarations
 using namespace std;
 
+// Class that is used to graphically display the search targets
 class SearchWord
 {
     private:
+		// Member variables
         string original, word;
 		bool found, outlining;
 
@@ -16,14 +20,14 @@ class SearchWord
 
 		int xStart, yStart, xEnd, yEnd;
 
-        // Constructor
+        // Constructors
         SearchWord();
 		SearchWord(const string& originalIn, bool foundIn = false, bool outliningIn = false);
         
         // Destructor
         ~SearchWord();
         
-        // Functions
+        // Member functions
         
         // Accessors
         string getOriginal();

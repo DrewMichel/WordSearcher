@@ -2,8 +2,10 @@
 #ifndef DREW_DEFINITIONS_H
 #define DREW_DEFINITIONS_H
 
+// IMPORTED PACKAGES:
 #include <string>
 
+// Constants used to define paths and variables
 const int SCREEN_WIDTH = 1080, SCREEN_HEIGHT = 720;
 const std::string DEFAULT_GAME_TITLE = "Word Searcher";
 

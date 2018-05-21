@@ -1,7 +1,10 @@
 #ifndef WORD_SANITIZER_H
 #define WORD_SANITIZER_H
 
+// IMPORTED PACKAGES:
 #include <string>
+
+// Namespace usage which allows the direct use of declarations
 using namespace std;
 
 class WordSanitizer
