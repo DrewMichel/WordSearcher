@@ -2,12 +2,16 @@
 #include <iostream>
 #include <assert.h>
 
+// Namespace declaration
 namespace Drewski
 {
+	// Cosntructor
 	SearchOrb::SearchOrb(int xBound1In, int yBound1In, int xBound2In, int yBound2In, int radiusIn) : xBound1(30 + (xBound1In * 22) ), yBound1(yBound1In * 30 + 34), xBound2(30 + (xBound2In * 22)), yBound2(yBound2In * 30 + 34), reversed(false)
 	{
 		reversed = false;
 		distanceCap = ORB_DISTANCE_CAP;
+
+		// Generetes random color
 		sf::Color color((rand() % 100) + 100, (rand() % 100) + 100, (rand() % 100) + 100, 255);
 		//sf::Image image;
 		//sf::Texture texture;
@@ -31,16 +35,21 @@ namespace Drewski
 		circle.setPosition(xBound1, yBound1);
 	}
 
+	// Destructor
 	SearchOrb::~SearchOrb()
 	{
 
 	}
 
+	// Gets circle by reference
 	sf::CircleShape &SearchOrb::getCircle()
 	{
 		return circle;
 	}
 
+	// Function responsible for updating the search orb
+	// Slowly moves toward target x and y coordinates.
+	// If the target is reached, changes target to alterate coordinates
 	void SearchOrb::update()
 	{
 		int x = circle.getPosition().x;

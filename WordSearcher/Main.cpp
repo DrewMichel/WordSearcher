@@ -53,7 +53,7 @@ Requirements for the Final Project include :
 
 1.	Use the class Style Sheet as usual -- DONE
 2.	Give your variables descriptive names that are appropriate for your program -- DONE
-3.	Comment your classes to make them readable for the novice programmer -- UPCOMING
+3.	Comment your classes to make them readable for the novice programmer -- DONE
 4.	Create at least 3 Classes including a TestDriver -- DONE
 5.	Use Constructors in your classes -- DONE, SearchOrb, Game, etc...
 6.	Use at least one Data Structure in your classes - ArrayList, Vector, LinkedList -- DONE, Grid data stored inside vector

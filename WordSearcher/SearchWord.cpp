@@ -1,5 +1,7 @@
+// IMPORTED PACKAGES
 #include "SearchWord.h"
 
+// Constructors
 SearchWord::SearchWord() : original(" 3v3ryth.ng wr0ng "), word(original), found(false), outlining(false)
 {
 	xStart = 0;
@@ -27,7 +29,7 @@ SearchWord::~SearchWord()
     
 }
 
-// Functions
+// Member functions
 
 // Accessors
 string SearchWord::getOriginal()

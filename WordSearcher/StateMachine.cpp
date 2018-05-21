@@ -1,7 +1,12 @@
+// IMPORTED PACKAGES:
 #include "StateMachine.h"
 
+// Namespace declaration
 namespace Drewski
 {
+	// Member functions
+
+	// Function that pushes a state onto the stack
 	void StateMachine::addState(StateRef newStateIn, bool isReplacingIn)
 	{
 		this->isAdding = true;
@@ -9,11 +14,13 @@ namespace Drewski
 		this->newState = move(newStateIn);
 	}
 
+	// Function that removes prepares for a state removal
 	void StateMachine::removeState()
 	{
 		this->isRemoving = true;
 	}
 
+	// Function that processes any added or removal of states
 	void StateMachine::processStateChanges()
 	{
 		if (this->isRemoving && !this->states.empty())
@@ -48,11 +55,13 @@ namespace Drewski
 		}
 	}
 
+	// Function that returns the top most state by reference
 	StateRef &StateMachine::getActivateState()
 	{
 		return this->states.top();
 	}
 
+	// Function that returns the current size of the state stack
 	int StateMachine::getStackSize()
 	{
 		return states.size();
