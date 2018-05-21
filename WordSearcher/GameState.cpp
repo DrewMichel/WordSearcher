@@ -289,19 +289,26 @@ namespace Drewski
 	{
 		string current;
 
+		// Iterates over the grid's height
 		for (int y = 0; y < data->grid.size(); y++)
 		{
+			// Iterates over the grid's width
 			for (int x = 0; x < data->grid[y].size(); x++)
 			{
 				current.clear();
+				
+				// Iterates from current width (x) index to the end of the width
 				for (int end = x; end < data->grid[y].size(); end++)
 				{
+					// Appends character into string
 					current.push_back(data->grid[y][end]);
 
+					// Checks to see if the unordered_map contains the current string
 					if (data->parseSearch.count(current) > 0)
 					{
 						//data->originalSearch[data->parseSearch[current]];
 
+						// Adds a search orb to unordered_map
 						data->assetManager.addOrb(data->parseSearch[current], SearchOrb(x, y, end, y));
 
 						// erase and erase reverse (unnecessary?)
@@ -314,21 +321,30 @@ namespace Drewski
 	// x
 	// x
 	// x
+
+	// Function that vertically scans the grid for search targets
 	void GameState::scanVertically()
 	{
 		string current;
 
+		// Iterates over the grid's height
 		for (int y = 0; y < data->grid.size(); y++)
 		{
+			// Iterates over the grid's width
 			for (int x = 0; x < data->grid[y].size(); x++)
 			{
 				current.clear();
+
+				// Iterates from current height (y) index to the end of the height
 				for (int end = y; end < data->grid.size(); end++)
 				{
+					// Appends character into string
 					current.push_back(data->grid[end][x]);
 
+					// Checks to see if the unordered_map contains the string
 					if (data->parseSearch.count(current) > 0)
 					{
+						// Adds a search orb into unordered_map
 						data->assetManager.addOrb(data->parseSearch[current], SearchOrb(x, y, x, end));
 					}
 				}
@@ -339,36 +355,47 @@ namespace Drewski
 	// x
 	//  x
 	//   x
+
+	// Function that scans diagonally down by call other functions
 	void GameState::scanDiagonallyDown()
 	{
+		// Scans top and bottom halves
 		scanDiagonallyDownTop();
 		scanDiagonallyDownBottom();
-
-		// scan bottom
 	}
 
 	// axx
 	//  bx
 	//   c
+
+	// Function that diagonally scans down the top half of the grid for search targets
 	void GameState::scanDiagonallyDownTop()
 	{
 		string current;
 		
+		// Checks to see if the grid has elements
 		if (data->grid.size() > 0)
 		{
 			// scan top of screen ( x, y, end)
+
+			// Iterates over the width of the grid
 			for (int x = 0; x < data->grid[0].size(); x++)
 			{
+				// Iterates over the height of the grid
 				for (int y = 0; y < data->grid.size(); y++)
 				{
 					current.clear();
-					// for(int end = y + 1
+					
+					// Iterates from current height (y) index to end of either width or height
 					for (int end = y; end < data->grid.size() && end + x < data->grid[y].size(); end++)
 					{
+						// Pushes character onto string
 						current.push_back(data->grid[end][x + end]);
 
+						// Checks to see if the unordered_map contains the string
 						if (data->parseSearch.count(current) > 0)
 						{
+							// Adds a search orb to the unordered_map
 							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(x + y, y, x + end, end));
 						}
 					}
@@ -380,6 +407,8 @@ namespace Drewski
 	// ooo
 	// aoo
 	// xbo
+
+	// Function that diagonally scans down the bottom of the grid for search targets
 	void GameState::scanDiagonallyDownBottom()
 	{
 		string current;
@@ -387,20 +416,28 @@ namespace Drewski
 		// scan bottom of screen ( y, x, end)
 
 		// 0 checked by top
+
+		// Checks to seee if the grid contains elementts
 		if (data->grid.size() > 0)
 		{
+			// Iterates over the height of the grid starting at 1
 			for (int y = 1; y < data->grid.size(); y++)
 			{
+				// Iterates diagonally within height and width
 				for (int offset = 0; offset + y < data->grid.size() && offset < data->grid[y].size(); offset++)
 				{
 					current.clear();
-					// for(int end = offset + 1
+					
+					// Iterates diagonally from offset index to end of width and height
 					for (int end = offset; end + y < data->grid.size() && end < data->grid[y].size(); end++)
 					{
+						// Appends character onto string
 						current.push_back(data->grid[y + end][end]);
 
+						// Checks to see if the unordered_map contains the string
 						if (data->parseSearch.count(current) > 0)
 						{
+							// Adds a search orb into the unordered_map
 							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(offset, offset + y, end, y + end));
 						}
 					}
@@ -414,68 +451,93 @@ namespace Drewski
 	//   x
 	//  x
 	// x
+	
+	// Function that diagonally up by calling other functions
 	void GameState::scanDiagonallyUp()
 	{
+		// Scans top and bottom halves
 		scanDiagonallyUpTop();
 		scanDiagonallyUpBottom();
 	}
 
+	// xxx
+	// xxo
+	// xoo
+
+	// Function that diagonally scans up the top of the grid for search targets
 	void GameState::scanDiagonallyUpTop()
 	{
 		string current;
 
+		// Checks to see if the grid contains elements
 		if (data->grid.size() > 0)
 		{
-			// scan top of screen
+			// Iterates over the height of the grid
 			for (int y = 0; y < data->grid.size(); y++)
 			{
+				// Iterates diagonally from height (y) index to 0
 				for (int offset = y; y - offset >= 0 && offset < data->grid[y].size(); offset--)
 				{
 					current.clear();
+
+					// Iterates diagonally from offset index to 0
 					for (int end = offset; y - end >= 0 && end < data->grid[y].size(); end--)
 					{
+						// Appends the character to string
 						current.push_back(data->grid[y - end][end]);
 
+						// Checks to see if the unordered_map contains the string
 						if (data->parseSearch.count(current) > 0)
 						{
+							// Adds search orb to unordered_map
 							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(offset, y - offset, end, y - end));
 						}
 					}
 				}
 			}
 		}
-		
 	}
 
+	// ooo
+	// oox
+	// oxx
+
+	// Function that diagonally scans up the bottom of the grid for search targets
 	void GameState::scanDiagonallyUpBottom()
 	{
 		string current;
 
-		
-		// scan bottom of screen
+		// Checks to see if the grid contains elements
 		if (data->grid.size() > 0)
 		{
+			// Iterates over the width of the grid starting at 1
 			for (int x = 1; x < data->grid[0].size(); x++)
 			{
+				// Iterates diagonally from 0 within width and height
 				for (int offset = 0; data->grid.size() - offset >= 0 && offset + x < data->grid[data->grid.size() - 1 - offset].size(); offset++)
 				{
 					current.clear();
+
+					// Iterates diagonally from offset index to width and height
 					for (int end = offset; data->grid.size() - end >= 0 && end + x < data->grid[data->grid.size() - 1 - end].size(); end++)
 					{
+						// Appends the character onto the string
 						current.push_back(data->grid[data->grid.size() - end - 1][x + end]);
 
+						// Checks to see if the unordered_map contains the string
 						if (data->parseSearch.count(current) > 0)
 						{
+							// Adds a search orb to the unordered_map
 							data->assetManager.addOrb(data->parseSearch[current], SearchOrb(x + offset, data->grid.size() - 1 - offset, x + end, data->grid.size() - 1 - end));
 						}
 					}
 				}
 			}
 		}
-		
 	}
 
 	// Global sf::Text operator function for <
+	// Function that is used to compare two text objects based on their strings
 	bool operator<(const sf::Text& one, const sf::Text& two)
 	{
 		string curOne = WordSanitizer::removeWhitespace(one.getString());
