@@ -4,7 +4,6 @@
 #include <iostream>
 #include "PauseState.h"
 #include "GameOverState.h"
-#include "PerlinNoise.h"
 #include <chrono>
 #include <algorithm>
 
@@ -176,7 +175,7 @@ namespace Drewski
 					}
 				}
 			}
-#if 0
+			/*
 			if (this->data->inputManager.isSpriteClicked(this->pauseButton, sf::Mouse::Left, this->data->window))
 			{
 				//std::cout << "Pause the Game" << std::endl;
@@ -192,7 +191,7 @@ namespace Drewski
 				}
 				
 			}
-#endif
+			*/
 		}
 	}
 

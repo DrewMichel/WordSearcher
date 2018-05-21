@@ -135,8 +135,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
-    <ClCompile Include="PerlinNoise.cpp" />
-    <ClCompile Include="PerlinWrapper.cpp" />
     <ClCompile Include="ppm.cpp" />
     <ClCompile Include="SearchOrb.cpp" />
     <ClCompile Include="SearchWord.cpp" />
@@ -153,8 +151,6 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="PauseState.h" />
-    <ClInclude Include="PerlinNoise.h" />
-    <ClInclude Include="PerlinWrapper.h" />
     <ClInclude Include="ppm.h" />
     <ClInclude Include="SearchOrb.h" />
     <ClInclude Include="SearchWord.h" />
