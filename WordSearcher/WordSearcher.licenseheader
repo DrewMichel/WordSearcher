@@ -1,0 +1,15 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
+extensions: .aspx .ascx
+<%-- 
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
+--%>
+extensions: .vb
+'Sample license text.
+extensions:  .xml .config .xsd
+<!--
+Sample license text.
+-->

@@ -1,3 +1,5 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
 #ifndef DREW_MAIN_MENU_STATE_H
 #define DREW_MAIN_MENU_STATE_H
 

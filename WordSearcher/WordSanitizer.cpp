@@ -1,3 +1,6 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
+
 // IMPORTED PACKAGES:
 #include "WordSanitizer.h"
 

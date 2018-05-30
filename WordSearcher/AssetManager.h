@@ -1,3 +1,5 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
 #ifndef DREW_ASSET_MANAGER_H
 #define DREW_ASSET_MANAGER_H
 

@@ -1,3 +1,5 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
 #pragma once
 #ifndef DREW_DEFINITIONS_H
 #define DREW_DEFINITIONS_H

@@ -1,3 +1,6 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
+
 // IMPORTED PACKAGES:
 #include "Game.h"
 #include "SplashState.h"

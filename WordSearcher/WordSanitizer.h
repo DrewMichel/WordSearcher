@@ -1,3 +1,5 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
 #ifndef WORD_SANITIZER_H
 #define WORD_SANITIZER_H
 

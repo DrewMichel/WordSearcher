@@ -1,3 +1,5 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
 #include "FileOperationException.h"
 
 namespace Drewski

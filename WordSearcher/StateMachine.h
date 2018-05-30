@@ -1,3 +1,5 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
 #ifndef DREW_STATE_MACHINE_H
 #define DREW_STATE_MACHINE_H
 

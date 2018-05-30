@@ -1,3 +1,5 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
 #ifndef SEARCH_WORD_H
 #define SEARCH_WORD_H
 

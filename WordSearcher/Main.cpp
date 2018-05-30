@@ -1,3 +1,6 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
+
 //  Course: CS 151         Days & Time:  Tuesday and Thursdays 3:30-5:20 PM
 //  Project Number: Final Project
 //  Programmer(s):  Andrew Michel

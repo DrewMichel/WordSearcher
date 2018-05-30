@@ -1,3 +1,5 @@
+// Created by: Andrew Steven Michel
+// Date Created: May 2018
 #ifndef DREW_GAME_STATE_H
 #define DREW_GAME_STATE_H
 
